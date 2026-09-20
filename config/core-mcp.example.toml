@@ -1,0 +1,10 @@
+schema = 1
+active_server = "stock"
+
+[servers.stock]
+alias = "stock-sagetv"
+base_url = "http://192.0.2.10:8270"
+token = "replace-with-generated-plugin-token"
+timeout_seconds = 10
+verify_tls = true
+

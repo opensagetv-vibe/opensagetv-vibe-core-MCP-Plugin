@@ -1,0 +1,30 @@
+name: Repository checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  source-contracts:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Validate bounded source contracts
+        run: python scripts/project.py validate
+      - name: Run adapter unit tests
+        run: python -m unittest discover -s tests -p 'test_*.py'
+      - name: Reject local credentials and generated outputs
+        shell: bash
+        run: |
+          test ! -e config/core-mcp.toml
+          test ! -d build
+          test ! -d dist
+          test ! -d output

@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "opensagetv-vibe-core-mcp"
+version = "0.1.1"
+description = "MCP adapter for the stock-compatible OpenSageTV Vibe Core Control Bridge"
+requires-python = ">=3.10"
+dependencies = [
+  "mcp[cli]==2.1.1",
+  "tomli==2.4.1; python_version < '3.11'",
+]
+
+[project.scripts]
+opensagetv-vibe-core-mcp = "opensagetv_vibe_core_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/opensagetv_vibe_core_mcp"]

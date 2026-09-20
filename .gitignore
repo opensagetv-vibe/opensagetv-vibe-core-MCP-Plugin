@@ -1,0 +1,12 @@
+/.deps/
+/build/
+/dist/
+/output/
+/artifacts/
+/config/*.toml
+!/config/core-mcp.example.toml
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
