@@ -8,5 +8,7 @@ This file records only the current project state.
 - [x] Prove authenticated capability, context, exact-path, watch, playback-state, seek, command, channel, caption, scan, and watched-state controls.
 - [x] Integrate bridge-first discovery into Android commissioning MCP with Sagex/Web fallback.
 - [x] Re-run required Android stock-server control tests on the non-Pro Fire TV.
-- [x] Deprecate Core-only commissioning controls in favor of the bridge while retaining a safe compatibility fallback.
+- [x] Remove Core-only commissioning events 230-232 after proving their public bridge replacements.
 - [x] Update the Core upstream/MCP evaluation with measured results and remaining gaps.
+- [x] Prove public `Seek(long)` against server-owned DVD playback and record
+  that no Core API correction is required for a stable title session.

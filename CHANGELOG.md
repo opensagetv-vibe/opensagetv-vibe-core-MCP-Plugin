@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Adopted the common twelve-repository Vibe workflow, update, handoff, and
+  release metadata contract.
+- Integrated version `0.1.1` as a required seeded component in every Vibe
+  production/debug server image and verified SageTV plugin loading plus the
+  loopback health endpoint in the rebuilt `.232` test container.
+
+- Resolve indexed DVD media by both `VIDEO_TS` and parent disc-root paths so
+  stock-server exact-path commissioning can use the same directory users see.
 - Created a stock-compatible SageTV Standard control bridge and external MCP adapter project.
 - Added bounded, authenticated controls for UI contexts, exact indexed media, playback, channels, captions, library scans, and diagnostics.
 - Added deterministic build/package, source validation, and stock-Core compatibility tests.
@@ -11,3 +19,7 @@
 - Installed version 0.1.1 on stock `.175` and passed the direct control gate,
   non-Pro Android exact-path playback/seek/pause gate, and live-channel gate.
   The stock `Sage.jar` remained byte-identical.
+- Physically proved the public `Seek(long)` API against stock `.175`'s
+  server-owned ALADDIN DVD Push session. Stable backward and forward targets
+  landed within one VOBU and continued playback; the earlier timeout was a
+  commissioning/startup race, not a missing DVD API implementation.

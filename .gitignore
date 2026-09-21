@@ -2,11 +2,13 @@
 /build/
 /dist/
 /output/
-/artifacts/
+/artifacts/*
+!/artifacts/downloads/
+/artifacts/downloads/*
+!/artifacts/downloads/.gitkeep
 /config/*.toml
 !/config/core-mcp.example.toml
 __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
-

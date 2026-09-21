@@ -262,15 +262,36 @@ final class ControlService {
         Map<String, Object> rebuilt = new LinkedHashMap<String, Object>();
         Object mediaFiles = api("GetMediaFiles");
         for (Object media : objects(mediaFiles)) {
+            boolean dvd = boolObject(api("IsDVD", new Object[]{media})).booleanValue();
             int segments = number(api("GetNumberOfSegments", new Object[]{media})).intValue();
             for (int segment = 0; segment < segments; segment++) {
                 Object raw = api("GetFileForSegment", new Object[]{media, Integer.valueOf(segment)});
-                if (raw instanceof File) rebuilt.put(canonical(((File) raw).getPath()), media);
+                if (raw instanceof File) {
+                    File segmentFile = (File) raw;
+                    rebuilt.put(canonical(segmentFile.getPath()), media);
+                    if (dvd) indexDvdRoots(rebuilt, segmentFile, media);
+                }
             }
         }
         mediaPathIndex = Collections.unmodifiableMap(rebuilt);
         mediaPathIndexTime = System.currentTimeMillis();
         return mediaPathIndex;
+    }
+
+    private static void indexDvdRoots(Map<String, Object> index, File segmentFile, Object media) {
+        File current = segmentFile.isDirectory() ? segmentFile : segmentFile.getParentFile();
+        for (int depth = 0; current != null && depth < 4; depth++, current = current.getParentFile()) {
+            if ("VIDEO_TS".equalsIgnoreCase(current.getName())) {
+                putIfAbsent(index, canonical(current.getPath()), media);
+                File discRoot = current.getParentFile();
+                if (discRoot != null) putIfAbsent(index, canonical(discRoot.getPath()), media);
+                return;
+            }
+        }
+    }
+
+    private static void putIfAbsent(Map<String, Object> index, String path, Object media) {
+        if (!index.containsKey(path)) index.put(path, media);
     }
 
     private Object mediaById(int id) {
