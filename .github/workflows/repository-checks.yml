@@ -19,6 +19,13 @@ jobs:
           python-version: "3.12"
       - name: Validate bounded source contracts
         run: python scripts/project.py validate
+      - name: Validate executable entry points
+        shell: bash
+        run: |
+          test -x dev.sh
+          test -x update.sh
+          test -x scripts/project.py
+          test -x scripts/create_ai_handoff_zip.py
       - name: Run adapter unit tests
         run: python -m unittest discover -s tests -p 'test_*.py'
       - name: Reject local credentials and generated outputs

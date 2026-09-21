@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Prepared the project for public source publication with explicit security,
+  dependency-license, executable-mode, metadata, and CI contracts.
+- Made the stock-server MCP bridge the required first option for new testing,
+  commissioning, diagnostic, and automation controls across Vibe projects.
 - Adopted the common twelve-repository Vibe workflow, update, handoff, and
   release metadata contract.
 - Integrated version `0.1.1` as a required seeded component in every Vibe

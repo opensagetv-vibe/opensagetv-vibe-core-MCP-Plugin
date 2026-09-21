@@ -5,6 +5,7 @@ import datetime as dt
 import hashlib
 import os
 from pathlib import Path
+import re
 import shutil
 import stat
 import subprocess
@@ -31,6 +32,19 @@ def version() -> str:
         if line.startswith("VERSION="):
             return line.split("=", 1)[1].strip()
     raise RuntimeError("VERSION missing from release.properties")
+
+
+def release_properties() -> dict[str, str]:
+    values: dict[str, str] = {}
+    for line in (ROOT / "release.properties").read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        key, separator, value = stripped.partition("=")
+        if not separator:
+            raise RuntimeError(f"Invalid release.properties line: {line}")
+        values[key.strip()] = value.strip()
+    return values
 
 
 def stock_jar() -> Path:
@@ -101,6 +115,61 @@ def test() -> None:
 
 
 def validate() -> None:
+    required_public_files = {
+        ".github/workflows/repository-checks.yml",
+        ".gitignore",
+        "AGENTS.md",
+        "CHANGELOG.md",
+        "CONTRIBUTING.md",
+        "HANDOFF.md",
+        "LICENSE",
+        "README.md",
+        "SECURITY.md",
+        "TASKS.md",
+        "THIRD_PARTY_NOTICES.md",
+        "WORKFLOW.md",
+        "config/core-mcp.example.toml",
+        "release.properties",
+    }
+    missing = sorted(name for name in required_public_files if not (ROOT / name).is_file())
+    if missing:
+        raise RuntimeError(f"Missing required public files: {missing}")
+
+    properties = release_properties()
+    expected_properties = {
+        "VERSION": "0.1.1",
+        "PACKAGE_ID": "opensagetv-vibe-core-MCP-Plugin",
+        "REQUIRES_BUILD": "true",
+        "PUBLISH_APPROVED": "true",
+    }
+    for key, expected in expected_properties.items():
+        if properties.get(key) != expected:
+            raise RuntimeError(f"release.properties {key} must be {expected!r}")
+
+    release = properties["VERSION"]
+    java_source = (ROOT / "src/main/java/org/opensagetv/vibe/coremcp/SageTVCoreMcpPlugin.java").read_text(encoding="utf-8")
+    if f'VERSION = "{release}"' not in java_source:
+        raise RuntimeError("Java plugin version does not match release.properties")
+    pyproject = (ROOT / "mcp/pyproject.toml").read_text(encoding="utf-8")
+    if not re.search(rf'^version\s*=\s*"{re.escape(release)}"\s*$', pyproject, re.MULTILINE):
+        raise RuntimeError("MCP adapter version does not match release.properties")
+
+    if (ROOT / ".git").exists():
+        tracked_config = subprocess.run(
+            ["git", "ls-files", "--error-unmatch", "config/core-mcp.toml"],
+            cwd=ROOT,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        if tracked_config.returncode == 0:
+            raise RuntimeError("Local config/core-mcp.toml must never be tracked")
+    example = (ROOT / "config/core-mcp.example.toml").read_text(encoding="utf-8")
+    private_markers = ("192.168.", "10.0.", "172.16.", "password =", "token = \"vibe-")
+    for marker in private_markers:
+        if marker in example:
+            raise RuntimeError(f"Unsafe example configuration marker found: {marker}")
+
     forbidden = {
         "Runtime.getRuntime(": "shell execution",
         "new ProcessBuilder(": "process execution",

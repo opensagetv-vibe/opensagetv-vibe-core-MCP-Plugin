@@ -46,6 +46,14 @@ $env:SAGETV_JAR = "C:\path\to\stock\Sage.jar"
 
 Or place it at `.deps/stock/Sage.jar`. Compile-only SageTV classes are never packaged in the plugin JAR.
 
+## Publication status
+
+The source repository is public at
+<https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin>.
+Versioned release artifacts and SageTV plugin-catalog publication remain
+separately gated; build local packages with `dev.cmd all` until those gates are
+explicitly approved.
+
 ## Local MCP configuration
 
 Copy the example and keep real tokens only in the ignored file:

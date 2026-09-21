@@ -29,11 +29,13 @@ def main() -> int:
     with zipfile.ZipFile(temporary, "w", zipfile.ZIP_DEFLATED) as archive:
         for path in files:
             name = f"opensagetv-vibe-core-MCP-Plugin/{path.relative_to(ROOT).as_posix()}"
+            data = path.read_bytes()
+            executable = path.suffix.lower() in {".py", ".sh"} or data.startswith(b"#!")
             info = zipfile.ZipInfo(name, (2026, 9, 20, 16, 0, 0))
             info.create_system = 3
-            info.external_attr = (stat.S_IFREG | 0o644) << 16
+            info.external_attr = (stat.S_IFREG | (0o755 if executable else 0o644)) << 16
             info.compress_type = zipfile.ZIP_DEFLATED
-            archive.writestr(info, path.read_bytes())
+            archive.writestr(info, data)
     temporary.replace(OUTPUT)
     print(f"Created {OUTPUT} with {len(files)} source files (local secrets excluded)")
     return 0

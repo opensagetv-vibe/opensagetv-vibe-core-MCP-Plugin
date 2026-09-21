@@ -12,3 +12,8 @@ This file records only the current project state.
 - [x] Update the Core upstream/MCP evaluation with measured results and remaining gaps.
 - [x] Prove public `Seek(long)` against server-owned DVD playback and record
   that no Core API correction is required for a stable title session.
+- [x] Prepare and publish the source repository under the `opensagetv-vibe`
+  organization with Vibe documentation, security, CI, and reproducibility
+  contracts.
+- [ ] Publish a versioned GitHub release or SageTV plugin-catalog entry only
+  after separate explicit approval.

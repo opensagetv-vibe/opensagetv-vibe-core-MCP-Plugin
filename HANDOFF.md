@@ -64,7 +64,10 @@ Core/client capabilities until accepted upstream as versioned protocol work.
 
 ## Publication status
 
-Local development only. Do not create a GitHub repository, release, or SageTV plugin-catalog submission without explicit approval.
+Public source-repository publication under the `opensagetv-vibe` organization
+was approved on 2026-09-21. A versioned GitHub release and SageTV
+plugin-catalog submission remain separate gates and must not be created without
+explicit approval.
 
 ## Container integration
 
