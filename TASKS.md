@@ -17,5 +17,5 @@ This file records only the current project state.
 - [x] Prepare and publish the source repository under the `opensagetv-vibe`
   organization with Vibe documentation, security, CI, and reproducibility
   contracts.
-- [ ] Publish a versioned GitHub release or SageTV plugin-catalog entry only
-  after separate explicit approval.
+- [x] Publish the explicitly approved v0.1.2 GitHub prerelease and submit its
+  verified package through the SageTV plugin catalog.

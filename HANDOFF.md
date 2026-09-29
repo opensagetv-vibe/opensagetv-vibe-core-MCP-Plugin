@@ -1,6 +1,6 @@
 # Handoff
 
-## 0.1.2 release candidate (2026-09-29)
+## 0.1.2 public prerelease (2026-09-29)
 
 Version 0.1.2 passes source validation, Java 8 compilation against the stock
 Sage.jar, the stock API/JSON contract test, MCP adapter authentication/config
@@ -72,10 +72,10 @@ Core/client capabilities until accepted upstream as versioned protocol work.
 
 ## Publication status
 
-Public source-repository publication under the `opensagetv-vibe` organization
-was approved on 2026-09-21. A versioned GitHub release and SageTV
-plugin-catalog submission remain separate gates and must not be created without
-explicit approval.
+Public source and the approved v0.1.2 prerelease are published under the
+`opensagetv-vibe` organization. The downloaded release ZIP matches the SHA-256
+above, current GitHub repository checks pass, and the verified SageTV catalog
+entry is submitted in OpenSageTV/sagetv-plugin-repo pull request 126.
 
 ## Container integration
 
