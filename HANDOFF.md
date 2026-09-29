@@ -1,5 +1,13 @@
 # Handoff
 
+## 0.1.3 release preparation (2026-09-29)
+
+Version 0.1.3 synchronizes the repository policy/documentation updates with a
+versioned rebuild of the existing bounded bridge. Runtime controls are
+unchanged from 0.1.2. The release must still pass stock-Sage API linkage,
+security contracts, Java/Python tests, deterministic packaging, manifest, and
+catalog validation before publication.
+
 ## 0.1.2 public prerelease (2026-09-29)
 
 Version 0.1.2 passes source validation, Java 8 compilation against the stock

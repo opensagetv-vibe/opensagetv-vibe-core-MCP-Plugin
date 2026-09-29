@@ -19,3 +19,6 @@ This file records only the current project state.
   contracts.
 - [x] Publish the explicitly approved v0.1.2 GitHub prerelease and submit its
   verified package through the SageTV plugin catalog.
+- [ ] Publish v0.1.3 with synchronized Java/Python metadata and the unchanged
+  bounded stock-server control surface; verify public packages, hashes,
+  repository checks, and the updated catalog proposal.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.3 - 2026-09-29
+
+- Standardized impact-based release validation and the stock-server MCP-first
+  test-control policy across the Vibe repositories.
+- Rebuilt the unchanged bounded stock-SageTV control surface with synchronized
+  Java and Python adapter version metadata. No new control capability, Core
+  patch, reflection path, or unrestricted filesystem/shell access was added.
+
 ## 0.1.2 - 2026-09-29
 
 - Allowlist SageTV's existing DVD menu, return, chapter, audio, and subtitle
