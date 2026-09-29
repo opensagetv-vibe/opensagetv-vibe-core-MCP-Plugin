@@ -8,6 +8,10 @@ Read `HANDOFF.md`, `README.md`, `TASKS.md`, and `WORKFLOW.md` before changing th
 - The HTTP bridge is disabled unless the Standard plugin is enabled, binds to loopback by default, and requires a bearer token for control calls.
 - The external MCP adapter owns MCP protocol handling; the SageTV JVM owns only the bounded control bridge.
 - Do not publish a repository, release, or SageTV plugin-catalog entry without explicit user approval.
+- Release validation is impact-based: rerun only gates the release changes
+  could affect. Do not repeat unrelated completed gates. Run the full gate
+  suite only when the user explicitly requests it or a broad dependency or
+  architecture change requires it, and document that reason and scope.
 
 
 ## Stock-server test-control policy
@@ -23,4 +27,3 @@ Read `HANDOFF.md`, `README.md`, `TASKS.md`, and `WORKFLOW.md` before changing th
   expressed through the stock plugin/API boundary. Document the proven API
   gap, keep the extension optional and negotiated with a safe stock fallback,
   and verify older clients and installations remain unaffected.
-
