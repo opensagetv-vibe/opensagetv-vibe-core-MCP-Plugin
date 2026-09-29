@@ -19,14 +19,18 @@ final class ControlService {
     static final int CAPABILITY_VERSION = 1;
     private static final Set<String> COMMANDS = Collections.unmodifiableSet(
             new LinkedHashSet<String>(Arrays.asList(
-                    "TV", "Back", "Home", "Options", "Info", "Play", "Pause", "Stop",
+                    "TV", "Back", "Home", "Options", "Info", "Full Screen On", "Full Screen Off",
+                    "Play", "Pause", "Stop",
                     "Skip Fwd", "Skip Bkwd", "Channel Up", "Channel Down",
-                    "Up", "Down", "Left", "Right", "Select")));
+                    "Up", "Down", "Left", "Right", "Select",
+                    "DVD Menu", "DVD Title Menu", "DVD Return",
+                    "DVD Next Chapter", "DVD Prev Chapter",
+                    "DVD Audio Change", "DVD Subtitle Change", "DVD Subtitle Toggle")));
     private static final List<String> ACTIONS = Collections.unmodifiableList(Arrays.asList(
             "capabilities", "ui.list", "ui.state", "ui.command",
             "media.resolve_exact_path", "media.watch", "media.seek", "media.control",
             "media.clear_watched", "channel.tune", "captions.get", "captions.set",
-            "library.scan", "diagnostics.snapshot"));
+            "library.add_import_path", "library.scan", "diagnostics.snapshot"));
     private volatile Map<String, Object> mediaPathIndex = Collections.emptyMap();
     private volatile long mediaPathIndexTime;
 
@@ -46,6 +50,7 @@ final class ControlService {
         else if ("channel.tune".equals(action)) result = tune(context(request), required(request, "channel"));
         else if ("captions.get".equals(action)) result = captionGet(context(request));
         else if ("captions.set".equals(action)) result = captionSet(context(request), required(request, "state"));
+        else if ("library.add_import_path".equals(action)) result = libraryAddImportPath(request);
         else if ("library.scan".equals(action)) result = libraryScan(bool(request, "wait_until_done", false));
         else result = diagnostics(request.get("context"));
         result.put("ok", Boolean.TRUE);
@@ -81,6 +86,8 @@ final class ControlService {
         out.put("context", context);
         out.put("fullyLoaded", boolObject(apiUI(context, "IsMediaPlayerFullyLoaded")));
         out.put("loading", boolObject(apiUI(context, "IsMediaPlayerLoading")));
+        out.put("dvd", boolObject(apiUI(context, "IsCurrentMediaFileDVD")));
+        out.put("dvdMenu", safeBoolean(context, "IsShowingDVDMenu"));
         Object media = apiUI(context, "GetCurrentMediaFile");
         if (media != null) out.put("media", mediaInfo(media));
         out.put("mediaTimeMs", number(apiUI(context, "GetMediaTime")));
@@ -96,12 +103,42 @@ final class ControlService {
     private Map<String, Object> uiCommand(String context, String command) {
         requireContext(context);
         if (!COMMANDS.contains(command)) throw new IllegalArgumentException("Command is not allowlisted: " + command);
-        apiUI(context, "SageCommand", new Object[]{command});
+        // DVD navigation must not depend on which STV menu happens to own the
+        // UI event. Stock SageTV exposes DirectPlaybackControl specifically
+        // for this purpose. Generic arrows remain SageCommand events outside
+        // an active DVD menu so normal STV navigation is unchanged.
+        long[] dvdControl = dvdControlForCommand(command,
+                safeBoolean(context, "IsShowingDVDMenu").booleanValue());
+        if (dvdControl != null) {
+            apiUI(context, "DirectPlaybackControl", new Object[]{
+                    Integer.valueOf((int) dvdControl[0]),
+                    Long.valueOf(dvdControl[1]), Long.valueOf(dvdControl[2])});
+        } else {
+            apiUI(context, "SageCommand", new Object[]{command});
+        }
         Map<String, Object> out = map();
         out.put("context", context);
         out.put("command", command);
         out.put("accepted", Boolean.TRUE);
         return out;
+    }
+
+    static long[] dvdControlForCommand(String command, boolean showingMenu) {
+        if ("DVD Menu".equals(command)) return new long[]{201, 2, 0};
+        if ("DVD Title Menu".equals(command)) return new long[]{201, 1, 0};
+        if ("DVD Next Chapter".equals(command)) return new long[]{206, 0, 0};
+        if ("DVD Prev Chapter".equals(command)) return new long[]{207, 0, 0};
+        if ("DVD Return".equals(command)) return new long[]{209, 0, 0};
+        if ("DVD Subtitle Change".equals(command)) return new long[]{214, -1, -1};
+        if ("DVD Subtitle Toggle".equals(command)) return new long[]{215, 0, 0};
+        if ("DVD Audio Change".equals(command)) return new long[]{216, -1, -1};
+        if (!showingMenu) return null;
+        if ("Select".equals(command)) return new long[]{208, 0, 0};
+        if ("Up".equals(command)) return new long[]{210, 1, 0};
+        if ("Right".equals(command)) return new long[]{210, 2, 0};
+        if ("Down".equals(command)) return new long[]{210, 3, 0};
+        if ("Left".equals(command)) return new long[]{210, 4, 0};
+        return null;
     }
 
     private Map<String, Object> watch(Map<String, String> request) {
@@ -128,7 +165,28 @@ final class ControlService {
         out.put("observed", Boolean.valueOf(observed));
         out.put("fromBeginning", Boolean.valueOf(fromBeginning));
         if (soughtTo != null) out.put("seekTargetMs", soughtTo);
-        out.put("state", uiState(context));
+        /*
+         * Do not append uiState() here.  A DVD Watch can be accepted while
+         * MiniDVDPlayer is still replacing its push transport.  uiState()
+         * calls IsShowingDVDMenu/GetMediaTime/GetMediaDuration, which cross
+         * the MiniClient media socket synchronously; during that replacement
+         * those reads can wait for the old decoder generation and hold the
+         * SageTV UI lock.  The HTTP caller then times out even though Watch
+         * succeeded, and a repeated exact-path start can disconnect a healthy
+         * client.  The watch response already contains the resolved media and
+         * bounded observed flag.  Callers that need a complete state snapshot
+         * may request ui.state after playback has settled.
+         *
+         * Keep a small response object for compatibility with clients that
+         * log the former state field, but populate it only from values already
+         * proven in this method; no player/socket API is called here.
+         */
+        Map<String, Object> watchState = map();
+        watchState.put("context", context);
+        watchState.put("fullyLoaded", Boolean.valueOf(observed));
+        watchState.put("media", mediaInfo(media));
+        watchState.put("deferredPlayerSnapshot", Boolean.TRUE);
+        out.put("state", watchState);
         return out;
     }
 
@@ -216,6 +274,21 @@ final class ControlService {
         Map<String, Object> out = map();
         out.put("requested", Boolean.TRUE);
         out.put("waitUntilDone", Boolean.valueOf(wait));
+        return out;
+    }
+
+    private Map<String, Object> libraryAddImportPath(Map<String, String> request) {
+        File directory;
+        try { directory = new File(required(request, "path")).getCanonicalFile(); }
+        catch (IOException error) { throw new IllegalArgumentException("Invalid library import path"); }
+        if (!directory.isAbsolute() || !directory.isDirectory())
+            throw new IllegalArgumentException("Library import path must be an existing absolute directory");
+        api("AddLibraryImportPath", new Object[]{directory.getPath()});
+        mediaPathIndex = Collections.emptyMap();
+        mediaPathIndexTime = 0;
+        Map<String, Object> out = map();
+        out.put("path", directory.getPath());
+        out.put("added", Boolean.TRUE);
         return out;
     }
 
@@ -398,6 +471,12 @@ final class ControlService {
         try { return number(apiUI(context, method)); }
         catch (RuntimeException unavailable) { return Long.valueOf(-1); }
     }
+    private static Boolean safeBoolean(String context, String method) {
+        try { return boolObject(apiUI(context, method)); }
+        catch (RuntimeException unavailable) { return Boolean.FALSE; }
+    }
+    static boolean isUiCommandAllowed(String command) { return COMMANDS.contains(command); }
+    static boolean isActionAllowed(String action) { return ACTIONS.contains(action); }
     private static Boolean boolObject(Object value) {
         return Boolean.valueOf(value instanceof Boolean ? ((Boolean) value).booleanValue() : Boolean.parseBoolean(String.valueOf(value)));
     }

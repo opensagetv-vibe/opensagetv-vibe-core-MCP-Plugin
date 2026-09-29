@@ -1,7 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.1.2 - 2026-09-29
 
+- Allowlist SageTV's existing DVD menu, return, chapter, audio, and subtitle
+  commands for deterministic physical-disc commissioning, and expose read-only
+  DVD/menu state without adding a private Core protocol.
 - Prepared the project for public source publication with explicit security,
   dependency-license, executable-mode, metadata, and CI contracts.
 - Made the stock-server MCP bridge the required first option for new testing,

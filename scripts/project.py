@@ -137,7 +137,7 @@ def validate() -> None:
 
     properties = release_properties()
     expected_properties = {
-        "VERSION": "0.1.1",
+        "VERSION": "0.1.2",
         "PACKAGE_ID": "opensagetv-vibe-core-MCP-Plugin",
         "REQUIRES_BUILD": "true",
         "PUBLISH_APPROVED": "true",

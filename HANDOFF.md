@@ -1,5 +1,13 @@
 # Handoff
 
+## 0.1.2 release candidate (2026-09-29)
+
+Version 0.1.2 passes source validation, Java 8 compilation against the stock
+Sage.jar, the stock API/JSON contract test, MCP adapter authentication/config
+tests, and deterministic packaging. The packaged plugin ZIP SHA-256 is
+`058e061fd733cfce7f860694bb719bd55a530ae36f280e5c58f4782913d589ff`.
+This release extends only allowlisted stock APIs and does not modify Sage.jar.
+
 ## Objective
 
 Provide deterministic SageTV server control to MCP tooling while leaving stock `Sage.jar` unchanged.

@@ -18,7 +18,8 @@ The bridge does not patch `Sage.jar`, add MiniClient wire events, replace Sagex,
 - Play, pause, stop, seek, skip, and set supported playback rates.
 - Tune an exact channel.
 - Get/set stock SageTV CC state.
-- Send a small allowlisted set of Sage commands such as `TV`, `Back`, and `Home`.
+- Send a small allowlisted set of Sage commands such as `TV`, `Back`, `Home`,
+  and the stock DVD menu/chapter/audio/subtitle commands.
 - Run the ordinary SageTV library import scan.
 - Clear watched state for one explicitly identified MediaFile.
 - Return a bounded diagnostic snapshot.
@@ -50,9 +51,9 @@ Or place it at `.deps/stock/Sage.jar`. Compile-only SageTV classes are never pac
 
 The source repository is public at
 <https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin>.
-Versioned release artifacts and SageTV plugin-catalog publication remain
-separately gated; build local packages with `dev.cmd all` until those gates are
-explicitly approved.
+Version 0.1.2 is the approved release candidate. Versioned release artifacts
+and the SageTV plugin-catalog entry are published only from the deterministic
+packages produced by `dev.cmd all`.
 
 ## Local MCP configuration
 
