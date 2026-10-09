@@ -74,9 +74,14 @@ Or place it at `.deps/stock/Sage.jar`. Compile-only SageTV classes are never pac
 
 The source repository is public at
 <https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin>.
-Version 0.1.4 is an unreleased validation candidate. Versioned release artifacts
+Version0.1.4 is approved for beta publication. Versioned release artifacts
 and the SageTV plugin-catalog entry are published only from the deterministic
 packages produced by `dev.cmd all`.
+
+The read-only server.activity action has local stock-JAR/unit proof; physical
+installation of that new action remains MCP-ACTIVITY-001, not a release PASS.
+No normal playback requires this MCP plugin. Companion controls refuse absent,
+disabled, unknown or third-party providers rather than replacing them.
 
 Ordinary `media.watch` now acknowledges the stock `Watch` request without a
 decoder-state wait; the caller must then verify playback through `ui.state` or

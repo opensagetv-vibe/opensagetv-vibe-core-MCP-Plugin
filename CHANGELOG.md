@@ -12,7 +12,13 @@
   guards pass; broader DVD/Windows gates remain separate;
   this does not change normal runtime playback or expose an arbitrary API.
 
-## 0.1.4 - unreleased
+## 0.1.4 - 2026-10-09
+
+- Prepare the user-approved beta publication with stock-JAR Java8/JDK11,
+  three Java suites, five Python contracts and deterministic package validation.
+  Existing caption/companion physical results remain scoped; new server.activity
+  physical commissioning stays open. Publication never grants recording-stop
+  or restart authority and is not a normal-playback dependency.
 
 - Add bounded typed FFmpeg caption-listener commissioning through public
   plugin APIs with confirmation, expected-value guard and readback. Scope/

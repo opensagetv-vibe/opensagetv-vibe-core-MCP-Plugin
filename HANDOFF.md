@@ -1,5 +1,14 @@
 # Handoff
 
+## PLUGIN-RELEASE-001 approved publication preparation (2026-10-09)
+
+User approves binary/catalog updates. Core MCP0.1.4 stock-JAR Java8/JDK11,
+three Java suites/five Python contracts/source validation pass. Package epoch
+2026-10-09 yields JAR ZIP3934a21b7cd0c620578eddfee059d7172d853cf103829a675ae3cf3af0775a4e,
+MD5 2fef6e12bbdca3ca3a8068dcbad82165. Verify exact-HEAD CI/public hashes
+before catalog submission. New server.activity physical commissioning remains
+open; publication neither installs a server nor grants recording interruption.
+
 ## Current next gate: MCP-ACTIVITY-001
 
 Read-only server.activity source/stock-Java8/contracts/validation pass. It

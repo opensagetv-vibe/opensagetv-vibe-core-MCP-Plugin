@@ -24,13 +24,19 @@ This file records only the current project state.
 - [ ] Validate and publish v0.1.4 with bounded nonblocking ordinary Watch,
   synchronized Java/Python metadata, stock-Sage API linkage, package hashes,
   repository checks, and an updated catalog proposal. Do not publish without
-  the user's final approval.
+  the user's final approval (received2026-10-09 for PLUGIN-RELEASE-001).
   Include the added `Time Scroll` allowlist in the next stock-server bridge
   deployment gate. Java 8 stock linkage and Java/Python contracts pass;
   the installed `.175` bridge now includes it; caption-listener deployment
   proof does not substitute for the independent Time Scroll command gate.
 
 ## Checklist change ledger
+
+- 2026-10-09 pre-commit publication review: user approval received; JDK11
+  stock-JAR Java8/three Java suites/five Python contracts/source/package gates
+  pass. server.activity physical commissioning stays unchecked. Publication
+  pending public verification/catalog PR; active checkoffs remain unchecked,
+  workspace PLUGIN-RELEASE-001 priority reviewed, Android order306 unchanged.
 
 - 2026-10-08 pre-commit source-sync review: stock-JAR Java8, three Java suites,
   five adapter/transport tests and source validation pass. Bounded companion/
