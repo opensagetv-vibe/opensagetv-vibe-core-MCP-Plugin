@@ -32,7 +32,8 @@ final class ControlService {
             "media.clear_watched", "channel.tune", "captions.get", "captions.set", "captions.trace",
             "library.add_import_path", "library.remove_import_path", "library.scan", "diagnostics.snapshot",
             "plugin.config_get", "plugin.config_set",
-            "companion.config_get", "companion.config_set", "companion.dvd_hook"));
+            "companion.config_get", "companion.config_set", "companion.dvd_hook",
+            "companion.available", "companion.status", "companion.install"));
     private final PluginCaptionSettings pluginCaptionSettings=new PluginCaptionSettings(
             (name,arguments) -> api(name,arguments));
     private final CompanionSettings companionSettings = new CompanionSettings(new CompanionSettings.Api() {
@@ -42,6 +43,12 @@ final class ControlService {
         }
     });
     private volatile Map<String, Object> mediaPathIndex = Collections.emptyMap();
+    private final CompanionInstaller companionInstaller = new CompanionInstaller(new CompanionSettings.Api() {
+        public Object global(String name, Object... arguments) { return api(name, arguments); }
+        public Object ui(String context, String name, Object... arguments) {
+            return apiUI(context, name, arguments);
+        }
+    });
     private volatile long mediaPathIndexTime;
 
     Map<String, Object> execute(Map<String, String> request) {
@@ -87,6 +94,14 @@ final class ControlService {
                     ? CompanionSettings.enabledValue(request.get("enabled")) : null;
             result = companionSettings.hook(context(request), request.get("expected"),
                     enabled, bool(request, "confirm", false));
+        }
+        else if ("companion.available".equals(action)) {
+            result = companionInstaller.available(bool(request, "refresh", false));
+        }
+        else if ("companion.status".equals(action)) result = companionInstaller.status();
+        else if ("companion.install".equals(action)) {
+            result = companionInstaller.install(required(request, "expected_version"),
+                    bool(request, "confirm", false));
         }
         else result = diagnostics(request.get("context"));
         result.put("ok", Boolean.TRUE);
@@ -429,7 +444,52 @@ final class ControlService {
     }
 
     private Object resolveExactPath(String requested) {
+        return resolveIndexedPathFirst(requested, new MediaPathLookup() {
+            public Object byIndexedFile(File file) {
+                return api("GetMediaFileForFilePath", new Object[]{file});
+            }
+            public boolean isDvd(Object media) {
+                return boolObject(api("IsDVD", new Object[]{media})).booleanValue();
+            }
+            public Object byCanonicalPath(String path) { return resolveCachedCanonicalPath(path, requested); }
+        });
+    }
+
+    interface MediaPathLookup {
+        Object byIndexedFile(File file);
+        boolean isDvd(Object media);
+        Object byCanonicalPath(String path);
+    }
+
+    /**
+     * Stock GetMediaFileForFilePath searches SageTV's existing MediaFile index.
+     * A cold bridge cache must not enumerate/canonicalize every unrelated SMB
+     * or DVD segment before returning an already indexed exact file. Try the
+     * literal path first (no filesystem stat); canonical spelling is second.
+     * The one DVD alias preserves the established parent-disc lookup, but only
+     * when the indexed VIDEO_TS object really is a DVD. Other authored layouts
+     * retain the existing canonical-segment fallback below. No file is imported
+     * or accepted merely because it exists on disk.
+     */
+    static Object resolveIndexedPathFirst(String requested, MediaPathLookup lookup) {
+        validateMediaPath(requested);
+        File literal = new File(requested);
+        Object match = lookup.byIndexedFile(literal);
+        if (match != null) return match;
         String wanted = canonical(requested);
+        File normalized = new File(wanted);
+        if (!normalized.equals(literal)) {
+            match = lookup.byIndexedFile(normalized);
+            if (match != null) return match;
+        }
+        if (!"VIDEO_TS".equalsIgnoreCase(normalized.getName())) {
+            match = lookup.byIndexedFile(new File(normalized, "VIDEO_TS"));
+            if (match != null && lookup.isDvd(match)) return match;
+        }
+        return lookup.byCanonicalPath(wanted);
+    }
+
+    private Object resolveCachedCanonicalPath(String wanted, String requested) {
         Map<String, Object> snapshot = mediaPathIndex;
         if (System.currentTimeMillis() - mediaPathIndexTime > 60000 || snapshot.isEmpty()) {
             snapshot = rebuildMediaPathIndex();
@@ -540,10 +600,14 @@ final class ControlService {
     }
 
     private static String canonical(String path) {
-        if (path == null || path.indexOf('\0') >= 0 || path.indexOf('\n') >= 0 || path.indexOf('\r') >= 0)
-            throw new IllegalArgumentException("Invalid media path");
+        validateMediaPath(path);
         try { return new File(path).getCanonicalPath(); }
         catch (IOException error) { throw new IllegalArgumentException("Invalid media path: " + path, error); }
+    }
+
+    private static void validateMediaPath(String path) {
+        if (path == null || path.indexOf('\0') >= 0 || path.indexOf('\n') >= 0 || path.indexOf('\r') >= 0)
+            throw new IllegalArgumentException("Invalid media path");
     }
 
     private static Object api(String method) { return api(method, new Object[0]); }

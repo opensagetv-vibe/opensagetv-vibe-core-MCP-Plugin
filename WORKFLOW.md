@@ -60,3 +60,30 @@ exact read-only recording API alongside bridge UI discovery; bridge health or
 unknown activity failures must abort. Recheck before the final replacement.
 
 Local server addresses, tokens, and credentials belong only in ignored TOML configuration. The tracked example must contain documentation-safe placeholders.
+
+## Fresh Client Extension commissioning
+
+1. Use `sage_companion_available(refresh=True)` only when a repository refresh
+   is explicitly wanted; subsequent metadata reads should use its default
+   false. Stage any approved development catalog through the existing guarded
+   deployment workflow, not an MCP-supplied arbitrary file or URL.
+2. Inspect `sage_companion_status` and checkpoint current plugin/UI settings.
+   Check `sage_server_activity` and preserve recordings and other clients.
+3. Call `sage_companion_install` only with the exact available numeric version
+   and `confirm=True`. Server-side metadata/compatibility and independent
+   recording/UI/client guards fail closed. Never edit the plugin registry as
+   an alternative to the supported installer.
+4. Treat `RESTART` as a successfully staged package requiring a separately
+   authorized, freshly idle restart. The installer never restarts SageTV or
+   enables pending classes. Verify post-restart installed version, enabled
+   state, health and the expected runtime JAR before physical DVD tests.
+5. Qualify only affected stock Windows/Linux, configuration, fallback and
+   restoration gates. Normal client playback must work without this MCP
+   commissioning dependency. Record compact results and retire completed raw
+   staging/captures using the workspace artifact workflow.
+
+For0.1.5 release validation, include ExactPathLookupTest,
+CompanionInstallerTest, existing security/config/restoration contracts and
+Python selected-server/confirmation/version/error tests. Source tests model
+failure paths; actual server installs/playback and public-release verification
+must be recorded separately. Do not repeat unrelated device/player matrices.

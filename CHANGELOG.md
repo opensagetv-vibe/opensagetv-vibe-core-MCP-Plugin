@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.1.5 - release preparation
+
+- Resolve an already indexed exact path through stock `GetMediaFileForFilePath`
+  before enumerating unrelated media. Preserve canonical spelling, verified
+  DVD parent/`VIDEO_TS` aliases, existing segment-cache fallback and invalid-
+  path guards. The cold-cache contract models a blocked unrelated library
+  without claiming an unmeasured physical speedup.
+- Add fixed-ID Client Extension availability, installed-status and confirmed
+  installation controls through public SageTV plugin APIs. Require exact
+  numeric version, Standard metadata, compatibility and fail-closed independent
+  recording/UI/client idle checks. No URLs, arbitrary IDs, registry edits,
+  stock Core changes or automatic restart are exposed.
+- Expose strict `sage_companion_available`, `sage_companion_status` and
+  `sage_companion_install` MCP tools. Only an explicit availability request
+  refreshes the repository. Propagate installation failures and pending
+  `RESTART` without interpreting either as loaded-runtime success.
+- Qualify the control candidate against unmodified stock Linux/Windows:
+  JDK11/Java8, all5 Java contracts and10 Python tests pass. Both actual public
+  companion installations returnOK with numeric0.1.0/enabledtrue readback,
+  no installer restart and three actual HTTP confirmation/version refusals.
+  Restore borrowed options; Core/registry files remain untouched.
+- Measure indexed DVD parent/VIDEO_TS lookup at0.015-0.031s on Linux and
+  0.031-0.078s on Windows, where earlier cold lookup timed out15s. Read-only
+  activity observes actual idle counts and an active Windows UI returns
+  safeToRestartfalse. Do not infer generic startup or legacy hardware results.
+- Repair timestamp-suffixed Linux development metadata through a reviewed
+  numeric catalog/public reinstall, not Core or registry edits. The real
+  refresh notification parse error is reported; independent availability
+  verifies the intended version before install. Public hashes, exact-HEAD
+  green CI and catalog submission remain separate release requirements.
+
+### Previously implemented commissioning controls
+
 - Add fail-closed, read-only stock server.activity restart preflight. Zero
   UI clients alone is not idle proof; recording and connected-client counts
   must also be zero. Expose it as sage_server_activity without stop/restart

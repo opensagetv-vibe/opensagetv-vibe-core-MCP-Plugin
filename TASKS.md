@@ -7,19 +7,15 @@
 
 This file records only the current project state.
 
-- [ ] **MCP-ACTIVITY-001 - Recording-aware restart preflight.** Proven gap:
-  zero connected UI clients did not mean idle; stock175 public API reports
-  three active recordings. Add read-only server.activity through public
-  GetCurrentlyRecordingMediaFiles/GetUIContextNames/GetConnectedClients;
-  unknown/null status fails closed. Read-only sage_server_activity adapter
-  routes the selected server and preserves bridge errors. Local stock Java8/contracts/validation
-  pass. Await genuinely idle server before installation, verify authenticated
-  count/idle values, and use this before every test plugin restart. Existing
-  exact read-only Sagex recording query is the explicit diagnostic-gap bridge
-  until this route is installed; never hide a bridge health failure. The actual
-  deployment helper refused the three-recording server before SSH/replacement;
-  no recordings stopped. Two adapter routing/error contracts additionally pass.
-
+- [ ] **MCP-RELEASE-015 - Publish qualified 0.1.5 commissioning dependency.**
+  User requests completion of Client Extension release and permits bounded
+  dependency plugin fixes. Select affected Java8/stock-JAR, Java/Python guards,
+  source/package/identity gates; complete installer/lookup physical acceptance
+  and recording-aware activity proof before claiming readiness. Then update
+  task ledger/source manifest immediately before commit, require exact-HEAD
+  green CI, publish immutable assets with bullet notes, independently verify
+  public SHA256/catalog MD5 and submit the matching catalog update. Local
+  source edits/Windows deployment are not themselves publication.
 
 - [ ] **MCP-TIMESCROLL-001 - Independent Time Scroll bridge command gate.**
   Retained from the0.1.4 publication task's deployment acceptance: include the
@@ -29,6 +25,69 @@ This file records only the current project state.
   skip/commit/cancel and do not infer a new production MiniClient event.
 
 ## Checklist change ledger
+
+- [x] **MCP-COMPANION-INSTALL-001 - Fresh companion installation on stock Core
+  (2026-10-09).** Original acceptance/parent VCE-002/004/005/006: fixed
+  companion ID; supported GetAvailablePluginForID/InstallPlugin/EnablePlugin;
+  numeric expected-version, Standard/compatibility and confirmation guards;
+  independently idle recording/UI/client status; separate availability/status
+  and explicit repository refresh; no caller URL/path/class/alternate ID or
+  raw registry/property edits; exact OK/RESTART and installed metadata; no
+  automatic restart. Candidate0.1.5 JAR SHA256
+  c1383fbfb7c64ecb97197643f3de74f054d648473557d979496da815808b4b2c
+  passes stock-JAR JDK11/Java8, all5 Java contracts and10 Python tests. Actual
+  public installation on stock Windows185 and Linux175 returns OK, installed
+  version0.1.0/enabledtrue; current extension JARaa1a5d44 independently verified.
+  No installer restart. Both authenticated bridges reject missing confirmation
+  HTTP400, changed numeric version HTTP500 with exact checkpoint error and
+  malformed numeric version HTTP400. Busy/unknown/wrong-type/third-party and
+  RESTART-defer remain unit proof, not physical old-device claims. Linux Dev.d
+  timestamp versions caused strict status refusal/stock notification parsing;
+  the reviewed descriptor was retired recoverably and repaired via normal
+  numeric catalog/public installation, never Core/registry editing. The real
+  refresh error was reported; subsequent read-only availability independently
+  verified0.1.0 before install. Original Linuxtrue/false/false/true and Windows
+  false options restored with readback. Parent playback acceptance is VCE-005,
+  not this installer gate. Compact evidence:
+  artifacts/results/MCP-RELEASE-015/controls-qualification.json.
+- [x] **MCP-EXACT-PATH-001 - Cold indexed-file lookup qualification
+  (2026-10-09).** Original acceptance/parent VCE Windows startup: literal stock
+  GetMediaFileForFilePath first, canonical spelling, verified DVD VIDEO_TS
+  alias and existing canonical-segment fallback; blocked unrelated-library,
+  exact/canonical hit, DVD/non-DVD alias and invalid-path guards; record actual
+  Windows/Linux results without admitting unindexed files or claiming a broad
+  matrix. Same candidate0.1.5 stock-JAR contracts pass. Actual DVD parent and
+  VIDEO_TS resolve the same indexed object: Linux MediaFile65513423 in
+  0.015-0.031s; Windows MediaFile294 in0.031-0.078s. Previous Windows cold
+  lookup timed out at15s. These are measured lookup results, not a guarantee
+  of every file's playback startup. Both stock Sage.jar hashes unchanged;
+  no unindexed files admitted. Compact evidence: the controls qualification
+  report above; exact source revision is preserved by the release commit.
+- [x] **MCP-ACTIVITY-001 - Recording-aware restart preflight (2026-10-09).**
+  Original acceptance: zero UI clients did not prove idle (earlier175 had3
+  recordings); public GetCurrentlyRecordingMediaFiles/GetUIContextNames/
+  GetConnectedClients, read-only sage_server_activity selected-server routing,
+  fail-closed null/error handling and authenticated deployment count/readback.
+  Earlier helper refused the active recordings before replacement, with no
+  recordings stopped. Candidate0.1.5 now returns actual authenticated idle
+  counts on stock Linux175 and Windows185; connected Windows UI produces
+  uiContextCount1 and safeToRestartfalse. Unknown earlier bootstrap status was
+  explicitly reported and separately approved, never classified as idle.
+  All5 Java/10 Python contracts pass; stock Sage.jar unchanged on both and
+  Linux rootFFmpeg ff4289cd unchanged. This observation grants no restart
+  authority or reservation: recheck immediately before any approved restart.
+  Compact evidence: artifacts/results/MCP-RELEASE-015/controls-qualification.json.
+- 2026-10-09 pre-commit qualification review: moved the three completed
+  control dependencies into this ledger, preserving IDs/parent acceptance and
+  measured evidence. Active MCP-RELEASE-015 publication and independent
+  MCP-TIMESCROLL-001 remain unchecked. Main owns root suggested order/cleanup;
+  qualified controls are not a published0.1.5 release or full DVD parity.
+
+- 2026-10-09 release-preparation review: added MCP-COMPANION-INSTALL-001,
+  MCP-EXACT-PATH-001 and MCP-RELEASE-015 as bounded VCE dependencies. No active
+  physical gate is checked off by source/adapter tests; main owns workspace
+  suggested-order update and physical results. All existing completion
+  history and immutable0.1.4 evidence remain intact.
 
 - [x] **PLUGIN-RELEASE-001 / original0.1.4 publication acceptance.** User
   approval received2026-10-09; nonblocking ordinary Watch, synchronized Java/

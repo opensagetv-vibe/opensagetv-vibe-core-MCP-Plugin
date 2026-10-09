@@ -1,5 +1,78 @@
 # Handoff
 
+## Current priority: 0.1.5 / Client Extension release dependencies
+
+Control qualification now completes MCP-ACTIVITY-001,
+MCP-EXACT-PATH-001 and MCP-COMPANION-INSTALL-001 on both unmodified stock
+Linux175 and Windows185. Compact authority:
+`artifacts/results/MCP-RELEASE-015/controls-qualification.json`.
+Candidate JAR SHA256 is
+`c1383fbfb7c64ecb97197643f3de74f054d648473557d979496da815808b4b2c`;
+stock JDK11 `--release 8`, all5 Java contracts and10 Python tests pass.
+Both stock Sage.jar hashes and Linux stock rootFFmpeg are unchanged.
+
+Pre-commit cleanup: the three completed raw control reports are recoverably
+retired to workspace rootdeleteme under their original project-relative path.
+The compact controls qualification retains all meaningful acceptance and
+limitations; parent VCE DVD/STV evidence remains active separately. Final
+stock-JAR/JDK11 all gate again passes5Java/10Python/source/package; deterministic
+runtime stillc1383fbf and catalogMD5e6d70dc8a8f374de6dbbd4e52cd4fc68.
+
+Actual public InstallPlugin/EnablePlugin returns OK on both platforms,
+installed companion0.1.0/enabledtrue and exact current JARaa1a5d44 verified;
+no installer restart. Both bridges physically reject missing confirmation400,
+changed version500/checkpoint error and malformed numeric version400. Busy,
+unknown, wrong-type, third-party and RESTART-defer are unit coverage only.
+Linux development descriptors appended a10-digit timestamp, causing strict
+metadata refusal and a stock update-notification parse error. The reviewed
+descriptor was retired recoverably; normal numeric catalog/public reinstall
+repaired metadata, with no Core/registry editing. The refresh's real error was
+reported, then independent availability verified0.1.0 before explicit install.
+
+DVD parent/VIDEO_TS resolve the same indexed MediaFile on Linux65513423 in
+0.015-0.031s and Windows294 in0.031-0.078s; earlier Windows cold lookup timed
+out15s. These lookup measurements do not promise all playback startup times.
+Authenticated idle activity is observed on both; active Windows UI yields
+uiContextCount1/safeToRestartfalse. Earlier unknown bootstrap was explicitly
+reported/separately approved, not inferred idle. Linux originaltrue/false/
+false/true and Windowsfalse options restored with readback. Actual DVD playback
+acceptance remains separate VCE-005. MCP-RELEASE-015/public assets/catalog and
+independent Time Scroll remain open. The preparation paragraphs below describe
+earlier local-only state and are superseded by this qualification, not erased.
+
+The user requests parallel completion of Client Extension release gates, with
+stock Windows185 powered on and non-Pro25 connected to USB HDMI capture.
+The new commissioning candidate is 0.1.5; the public 0.1.4 tag/assets below
+remain immutable. Main owns actual Windows bootstrap, server/plugin load,
+activity observations and physical extension gates. Do not infer those PASS
+from the local contracts below or silently reuse older installed-JAR hashes.
+
+Exact-path resolution now tries stock GetMediaFileForFilePath on the literal
+indexed file before touching the canonical all-library cache. Canonical
+spelling and verified VIDEO_TS/DVD-parent aliases remain, followed by the
+existing fallback. ExactPathLookupTest proves cold indexed hits avoid a
+simulated blocked unrelated library and retains invalid/non-DVD guards;
+physical startup improvement needs measured server results.
+
+`CompanionInstaller` provides fixed companion-ID availability/status/install
+using public plugin APIs only. Installation requires `confirm=true`, exact
+numeric expected version, Standard/compatibility guards and independently
+idle recordings/UI/connected clients. It returns OK or RESTART, never
+restarts, defers enabling pending Java classes and validates the exact
+installed object. No URL/path/alternate-ID/class/registry access exists.
+Standalone `javac --release 8` / `CompanionInstallerTest` passes; main's full
+stock-JAR build/deployment remains distinct. Disposable standalone classes
+were safely retired to root `deleteme/artifacts/temp/companion-installer-contract-20261009`.
+
+External adapter now exposes `sage_companion_available(refresh=False)`,
+`sage_companion_status` and `sage_companion_install(expected_version, confirm)`
+with selected server routing and strict Boolean/numeric guards. All 10 Python
+contracts pass, including 5 new tool contracts; failed bridge actions remain
+errors. This is optional commissioning, not normal playback dependency.
+The control dependencies now close with the physical record above;
+MCP-RELEASE-015 remains unchecked until public-release acceptance. Newer task evidence supersedes old
+"current"/pending/authorization notes below; those are retained history.
+
 ## PLUGIN-RELEASE-001 published and catalog submitted (2026-10-09)
 
 Beta0.1.4: https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin/releases/tag/v0.1.4

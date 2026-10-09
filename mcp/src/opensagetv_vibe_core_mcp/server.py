@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from mcp.server import MCPServer
@@ -48,6 +49,42 @@ def sage_server_activity(server: str = "") -> dict[str, Any]:
     Missing/failed bridge actions remain errors, never an idle fallback.
     """
     return _call("server.activity", server)
+
+
+@mcp.tool()
+def sage_companion_available(refresh: bool = False, server: str = "") -> dict[str, Any]:
+    """Inspect only Client Extension metadata; refresh the repository explicitly.
+
+    This never installs a package or restarts SageTV. It cannot accept a plugin
+    ID, URL, path or class name from the caller.
+    """
+    if type(refresh) is not bool:
+        raise ValueError("refresh must be a Boolean")
+    return _call("companion.available", server, refresh=refresh)
+
+
+@mcp.tool()
+def sage_companion_status(server: str = "") -> dict[str, Any]:
+    """Read the fixed Client Extension's installed version and enabled state."""
+    return _call("companion.status", server)
+
+
+@mcp.tool()
+def sage_companion_install(expected_version: str, confirm: bool = False,
+                           server: str = "") -> dict[str, Any]:
+    """Commission the exact available Client Extension through stock plugin APIs.
+
+    Requires explicit confirmation, numeric version and independently idle
+    recording/client counts. RESTART means pending installation, not that this
+    tool restarted SageTV. Restart authorization and a fresh preflight remain
+    separate; normal playback never requires this MCP commissioning tool.
+    """
+    if confirm is not True:
+        raise ValueError("confirm=true is required for companion installation")
+    if not isinstance(expected_version, str) or not re.fullmatch(
+            r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)", expected_version):
+        raise ValueError("expected_version must be exact numeric major.minor.patch")
+    return _call("companion.install", server, expected_version=expected_version, confirm=True)
 
 
 @mcp.tool()

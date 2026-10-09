@@ -5,7 +5,8 @@ counts through stock APIs, exposed as the `sage_server_activity` MCP tool.
 `safeToRestart` requires every count to be zero;
 unknown status is an error, not idle. Always recheck immediately before a
 restart; a user-approved window alone does not authorize interrupting
-recordings. This action's physical commissioning is tracked in MCP-ACTIVITY-001.
+recordings. MCP-ACTIVITY-001 now records stock Linux/Windows physical idle
+readback and an active Windows UI yielding `safeToRestart=false`.
 
 Companion commissioning optionally uses `companion.config_get/set` for only
 `enabled`, `reload.recovery`, `trace.dvd`, `dvd.tv_skip_keys`; writes require
@@ -24,6 +25,38 @@ The project contains two deliberately separated components:
 - **Vibe Core MCP adapter** — an external Python MCP stdio server that calls the authenticated bridge API.
 
 The bridge does not patch `Sage.jar`, add MiniClient wire events, replace Sagex, execute arbitrary Sage expressions, or expose a shell.
+
+## Version 0.1.5 commissioning candidate
+
+Exact-path lookup first asks stock `GetMediaFileForFilePath` for the literal
+indexed file, then its canonical spelling and a verified DVD `VIDEO_TS`
+alias. Only a miss enters the existing bounded canonical-segment cache. This
+avoids scanning unrelated, unavailable network media for an already indexed
+hit; it never imports a file or treats filesystem existence as authorization.
+
+Three bounded MCP tools support a fresh Client Extension installation:
+
+- `sage_companion_available(refresh=False, server="")` reads the fixed
+  companion's available metadata; repository refresh is explicit.
+- `sage_companion_status(server="")` reads its installed version/enabled state.
+- `sage_companion_install(expected_version="0.1.0", confirm=True, server="")`
+  installs only that exact numeric version through SageTV's public plugin
+  manager. Its identifier and Standard-plugin type are validated, and current
+  recordings, UI contexts and connected clients must independently be idle.
+
+No tool accepts a package URL, path, alternate plugin ID or class name. An
+installer `RESTART` result is pending work, not an automatic restart or proof
+that the new Java classes loaded. Recheck activity and obtain applicable
+restart authority separately. The Client Extension does not require this MCP
+plugin for ordinary playback. The installer/lookup/activity controls now pass
+actual stock Linux/Windows commissioning: public companion installation
+returns `OK`, numeric0.1.0/enabledtrue is read back, and both bridges reject
+three actual confirmation/version errors. Local busy/unknown/RESTART and
+legacy-client contracts remain distinct from physical playback claims.
+Indexed DVD parent/VIDEO_TS lookup measured0.015-0.031s on Linux and
+0.031-0.078s on Windows, compared with the previous Windows cold timeout15s.
+Stock Sage.jar remains unchanged on both; DVD playback qualification is a
+separate Client Extension gate. Version0.1.5 publication is still pending.
 
 ## Supported controls
 
@@ -79,8 +112,13 @@ OpenSageTV/sagetv-plugin-repo#127 and awaits upstream merge. Versioned artifacts
 and the SageTV plugin-catalog entry are published only from the deterministic
 packages produced by `dev.cmd all`.
 
-The read-only server.activity action has local stock-JAR/unit proof; physical
-installation of that new action remains MCP-ACTIVITY-001, not a release PASS.
+Version 0.1.5 is a release-preparation candidate, not yet a published catalog
+update. Do not overwrite the immutable 0.1.4 release or describe the new
+installer/lookup commissioning as complete before its physical results exist.
+
+The read-only server.activity action now has stock Linux/Windows deployment
+and physical count/readback proof in MCP-ACTIVITY-001. This is control
+qualification, not a published0.1.5 release or permission to interrupt users.
 No normal playback requires this MCP plugin. Companion controls refuse absent,
 disabled, unknown or third-party providers rather than replacing them.
 
