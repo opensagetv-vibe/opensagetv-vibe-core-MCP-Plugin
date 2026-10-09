@@ -21,16 +21,26 @@ This file records only the current project state.
   no recordings stopped. Two adapter routing/error contracts additionally pass.
 
 
-- [ ] Validate and publish v0.1.4 with bounded nonblocking ordinary Watch,
-  synchronized Java/Python metadata, stock-Sage API linkage, package hashes,
-  repository checks, and an updated catalog proposal. Do not publish without
-  the user's final approval (received2026-10-09 for PLUGIN-RELEASE-001).
-  Include the added `Time Scroll` allowlist in the next stock-server bridge
-  deployment gate. Java 8 stock linkage and Java/Python contracts pass;
-  the installed `.175` bridge now includes it; caption-listener deployment
-  proof does not substitute for the independent Time Scroll command gate.
+- [ ] **MCP-TIMESCROLL-001 - Independent Time Scroll bridge command gate.**
+  Retained from the0.1.4 publication task's deployment acceptance: include the
+  allowlist in the next safe stock-server bridge gate. Java8/contracts and
+  installed allowlist pass, but caption-listener proof does not substitute
+  for the independent physical command. Preserve settings/stateful enter/
+  skip/commit/cancel and do not infer a new production MiniClient event.
 
 ## Checklist change ledger
+
+- [x] **PLUGIN-RELEASE-001 / original0.1.4 publication acceptance.** User
+  approval received2026-10-09; nonblocking ordinary Watch, synchronized Java/
+  Python metadata, stock-JAR Java8/JDK11 linkage, three Java/five Python suites,
+  source/package validation pass. Released at c71792407c18c74248b1f080c70a563ada80fac0
+  with green CI and4 independently downloaded/digest-verified public assets.
+  JAR ZIP3934a21b and MD5 2fef6e12bbdca3ca3a8068dcbad82165 match submitted
+  catalog PR127 OPEN/MERGEABLE, not merged/live availability. server.activity
+  physical commissioning remains MCP-ACTIVITY-001; independent Time Scroll
+  deployment requirement preserved as MCP-TIMESCROLL-001. No normal playback
+  MCP dependency/server installation/restart. Documentation-only follow-up
+  keeps tag/runtime fixed; compact workspace PLUGIN-RELEASE-001 evidence.
 
 - 2026-10-09 pre-commit publication review: user approval received; JDK11
   stock-JAR Java8/three Java suites/five Python contracts/source/package gates

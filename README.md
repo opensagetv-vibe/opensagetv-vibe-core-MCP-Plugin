@@ -74,7 +74,8 @@ Or place it at `.deps/stock/Sage.jar`. Compile-only SageTV classes are never pac
 
 The source repository is public at
 <https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin>.
-Version0.1.4 is approved for beta publication. Versioned release artifacts
+Version0.1.4 is published as a beta. The catalog update is submitted in
+OpenSageTV/sagetv-plugin-repo#127 and awaits upstream merge. Versioned artifacts
 and the SageTV plugin-catalog entry are published only from the deterministic
 packages produced by `dev.cmd all`.
 

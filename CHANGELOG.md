@@ -14,6 +14,11 @@
 
 ## 0.1.4 - 2026-10-09
 
+- Published4 public assets; independent downloads match GitHub digests and
+  catalog JAR ZIP MD5. Catalog update submitted in plugin-repo#127, awaiting
+  merge/aggregate generation. Physical activity/Time Scroll gates stay open;
+  post-release task closure is documentation-only with immutable tag/runtime.
+
 - Prepare the user-approved beta publication with stock-JAR Java8/JDK11,
   three Java suites, five Python contracts and deterministic package validation.
   Existing caption/companion physical results remain scoped; new server.activity

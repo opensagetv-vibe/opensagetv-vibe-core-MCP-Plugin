@@ -1,8 +1,18 @@
 # Handoff
 
-## PLUGIN-RELEASE-001 approved publication preparation (2026-10-09)
+## PLUGIN-RELEASE-001 published and catalog submitted (2026-10-09)
 
-User approves binary/catalog updates. Core MCP0.1.4 stock-JAR Java8/JDK11,
+Beta0.1.4: https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin/releases/tag/v0.1.4
+Tag c71792407c18c74248b1f080c70a563ada80fac0 has green CI and4 independently
+downloaded/digest-verified assets. Catalog manifest MD5 matches public JAR ZIP.
+Catalog PR127 OPEN/MERGEABLE: https://github.com/OpenSageTV/sagetv-plugin-repo/pull/127
+Ordinary plugin-manager availability awaits merge/aggregate generation.
+MCP-ACTIVITY-001 and MCP-TIMESCROLL-001 physical commissioning remain open;
+no server installation/restart or recording interruption. Documentation-only
+closure does not rewrite tag/runtime. Older pending-publication notes below
+are historical, not current authority or a new deployment result.
+
+Qualification detail: Core MCP0.1.4 stock-JAR Java8/JDK11,
 three Java suites/five Python contracts/source validation pass. Package epoch
 2026-10-09 yields JAR ZIP3934a21b7cd0c620578eddfee059d7172d853cf103829a675ae3cf3af0775a4e,
 MD5 2fef6e12bbdca3ca3a8068dcbad82165. Verify exact-HEAD CI/public hashes
