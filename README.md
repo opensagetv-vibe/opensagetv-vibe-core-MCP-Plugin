@@ -26,7 +26,7 @@ The project contains two deliberately separated components:
 
 The bridge does not patch `Sage.jar`, add MiniClient wire events, replace Sagex, execute arbitrary Sage expressions, or expose a shell.
 
-## Version 0.1.5 commissioning candidate
+## Version 0.1.5 commissioning controls
 
 Exact-path lookup first asks stock `GetMediaFileForFilePath` for the literal
 indexed file, then its canonical spelling and a verified DVD `VIDEO_TS`
@@ -56,7 +56,7 @@ legacy-client contracts remain distinct from physical playback claims.
 Indexed DVD parent/VIDEO_TS lookup measured0.015-0.031s on Linux and
 0.031-0.078s on Windows, compared with the previous Windows cold timeout15s.
 Stock Sage.jar remains unchanged on both; DVD playback qualification is a
-separate Client Extension gate. Version0.1.5 publication is still pending.
+separate Client Extension gate. Version 0.1.5 is now a published beta.
 
 ## Supported controls
 
@@ -107,18 +107,23 @@ Or place it at `.deps/stock/Sage.jar`. Compile-only SageTV classes are never pac
 
 The source repository is public at
 <https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin>.
-Version0.1.4 is published as a beta. The catalog update is submitted in
-OpenSageTV/sagetv-plugin-repo#127 and awaits upstream merge. Versioned artifacts
+Version [0.1.5](https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin/releases/tag/v0.1.5)
+is published as a beta, with four independently downloaded and digest-verified
+assets. Its matching catalog update is submitted in
+[PR128](https://github.com/OpenSageTV/sagetv-plugin-repo/pull/128), currently
+open and mergeable. The earlier0.1.4 leaf was merged through PR127, but current
+generated catalogs have not yet caught up; submission/leaf merge is not proof
+of plugin-manager availability. Versioned artifacts
 and the SageTV plugin-catalog entry are published only from the deterministic
 packages produced by `dev.cmd all`.
 
-Version 0.1.5 is a release-preparation candidate, not yet a published catalog
-update. Do not overwrite the immutable 0.1.4 release or describe the new
-installer/lookup commissioning as complete before its physical results exist.
+GitHub publication does not imply SageTV plugin-manager availability: the
+matching catalog entry must be submitted, approved and aggregated upstream.
+Published0.1.4 and0.1.5 tags/assets remain immutable.
 
 The read-only server.activity action now has stock Linux/Windows deployment
 and physical count/readback proof in MCP-ACTIVITY-001. This is control
-qualification, not a published0.1.5 release or permission to interrupt users.
+qualification, not permission to interrupt users or a broad DVD matrix pass.
 No normal playback requires this MCP plugin. Companion controls refuse absent,
 disabled, unknown or third-party providers rather than replacing them.
 

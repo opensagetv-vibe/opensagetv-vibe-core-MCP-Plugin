@@ -7,15 +7,6 @@
 
 This file records only the current project state.
 
-- [ ] **MCP-RELEASE-015 - Publish qualified 0.1.5 commissioning dependency.**
-  User requests completion of Client Extension release and permits bounded
-  dependency plugin fixes. Select affected Java8/stock-JAR, Java/Python guards,
-  source/package/identity gates; complete installer/lookup physical acceptance
-  and recording-aware activity proof before claiming readiness. Then update
-  task ledger/source manifest immediately before commit, require exact-HEAD
-  green CI, publish immutable assets with bullet notes, independently verify
-  public SHA256/catalog MD5 and submit the matching catalog update. Local
-  source edits/Windows deployment are not themselves publication.
 
 - [ ] **MCP-TIMESCROLL-001 - Independent Time Scroll bridge command gate.**
   Retained from the0.1.4 publication task's deployment acceptance: include the
@@ -25,6 +16,49 @@ This file records only the current project state.
   skip/commit/cancel and do not infer a new production MiniClient event.
 
 ## Checklist change ledger
+
+- [x] **MCP-RELEASE-015 - Publish qualified 0.1.5 commissioning dependency.**
+  User requests completion of Client Extension release and permits bounded
+  dependency plugin fixes. Select affected Java8/stock-JAR, Java/Python guards,
+  source/package/identity gates; complete installer/lookup physical acceptance
+  and recording-aware activity proof before claiming readiness. Then update
+  task ledger/source manifest immediately before commit, require exact-HEAD
+  green CI, publish immutable assets with bullet notes, independently verify
+  public SHA256/catalog MD5 and submit the matching catalog update. Local
+  source edits/Windows deployment are not themselves publication.
+  GitHub publication sub-gate now passes at8bb3cff with four independently
+  digest/hash-verified assets and immutablev0.1.5 tag. Remaining acceptance:
+  main submits matching catalog XML/MD5 and records its actual PR status;
+  do not equate submission with upstream approval/live availability.
+  Earlier PR127 is MERGED;0.1.5 requires a new branch/PR, not editing that
+  merged publication branch. Main may combine the first qualified extension.
+  Pre-commit catalog review2026-10-09: fresh upstream master branch
+  update-core-mcp-015-20261009 changes only the Core MCP leaf's version/URL/MD5.
+  XML equals the qualified canonical package; fresh public ZIP verifies SHA256
+  e56e2d34 and MD5e6d70dc8. Shared verify-release passes exacttag8bb3cff/four
+  assets. No generated aggregates/other plugins changed. Submission pending;
+  completed tasks remain only in the ledger and workspace order was reviewed.
+  Closure2026-10-09: matching catalog PR128 submitted/open/mergeable at
+  commit388a081f6bfde8f1ff2c8724a849138a2bccbf6c, one leaf/three lines only.
+  Postflight CLEAN; target catalog repository registers no check runs, not
+  falsely reported as CI green. Qualified source8bb has green CI, four verified
+  immutable assets and fresh public ZIP matching canonical XML/SHA256/MD5.
+  Upstream merge/aggregate availability stays the workspace catalog task.
+  As observed today, regular aggregate still carries FFmpeg0.1.2 and no MCP;
+  leaf acceptance/public GitHub release does not imply plugin-manager availability.
+  Compact results/MCP-RELEASE-015/catalog-submission.json.
+
+- [x] **MCP-RELEASE-015 / GitHub publication sub-gate (2026-10-09).** Parent
+  release task retains its catalog acceptance above. Source8bb3cff44b5eca18c7869f298705e2db7b8b4c37
+  passes required exact-HEAD CI run37960685171 and shared release gate.
+  Beta v0.1.5 publishes4 assets with bullet notes; independent downloads match
+  every GitHub digest/local package/SHA256SUMS. Catalog MD5
+  e6d70dc8a8f374de6dbbd4e52cd4fc68 matches ZIPe56e2d34; JARc1383fbf contains
+  only own Java8 classes. Stock physical control proof remains scoped in the
+  completed dependency entries; no server/device modification by publication.
+  Canonical output/packages retained; completed download/helper staging retires
+  to rootdeleteme after compact publication-verification.json is recorded.
+  No catalog write yet and no tag/runtime rewrite in documentation follow-up.
 
 - [x] **MCP-COMPANION-INSTALL-001 - Fresh companion installation on stock Core
   (2026-10-09).** Original acceptance/parent VCE-002/004/005/006: fixed

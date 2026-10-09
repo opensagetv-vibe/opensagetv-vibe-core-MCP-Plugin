@@ -1,5 +1,44 @@
 # Handoff
 
+## MCP-RELEASE-015 complete / catalog submission2026-10-09
+
+https://github.com/OpenSageTV/sagetv-plugin-repo/pull/128 is OPEN/MERGEABLE/CLEAN,
+head388a081f6bfde8f1ff2c8724a849138a2bccbf6c. Only one leaf's version/location/
+MD5 changed. Fresh public ZIP independently matches canonical release XML,
+SHA256e56e2d34/MD5e6d70dc8; shared verify-release passes exactsource8bb/four
+immutablev0.1.5 assets. Target catalog repository registers no check runs;
+do not claim absent checks are green. PR127 was already merged and was not
+rewritten. MCP-RELEASE-015 moves into the ledger, workspace catalog acceptance
+remains pending upstream merge/aggregate generation. Regular aggregate observed
+today still carries FFmpeg0.1.2/noMCP; Beta contains no matching Vibe entries.
+Compact results/MCP-RELEASE-015/catalog-submission.json records that boundary.
+Documentation-only source follow-up changes no Java/runtime/version/tag/assets.
+Independent Time Scroll physical enter/skip/commit/cancel stays open.
+
+## MCP-RELEASE-015 / GitHub beta published, matching catalog pending
+
+Version0.1.5 is published at
+https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin/releases/tag/v0.1.5
+from exact source8bb3cff44b5eca18c7869f298705e2db7b8b4c37, green required
+CI run37960685171. Four independent public downloads match GitHub digests,
+local packages and SHA256SUMS; catalog MD5e6d70dc8a8f374de6dbbd4e52cd4fc68
+matches ZIPe56e2d34 and inspected own-class Java8 JARc1383fbf. Shared
+verify-release passes with tag==HEAD. Release notes are bullet points and
+preserve optional commissioning/fallback/DVD parity limitations.
+
+Compact publication evidence:
+`artifacts/results/MCP-RELEASE-015/publication-verification.json`.
+The matching catalog update is pending main, not live plugin-manager
+availability. Earlier PR127 is now MERGED; submit0.1.5 on a new catalog
+branch/PR, optionally together with the first qualified Client Extension.
+Do not reuse the merged update-vibe-plugins-20261009 branch. Older "PR127
+OPEN" paragraphs below describe their historical publication snapshot.
+MCP-RELEASE-015 remains open for new-submission acceptance; independent
+Time Scroll stays open. Do not rewrite published tags/assets. A subsequent
+task/documentation-only commit changes no runtime package and requires fresh
+exact-HEAD CI. Canonical packages remain; completed publication download/
+notes/verifier staging retires recoverably to rootdeleteme.
+
 ## Current priority: 0.1.5 / Client Extension release dependencies
 
 Control qualification now completes MCP-ACTIVITY-001,
@@ -36,8 +75,8 @@ Authenticated idle activity is observed on both; active Windows UI yields
 uiContextCount1/safeToRestartfalse. Earlier unknown bootstrap was explicitly
 reported/separately approved, not inferred idle. Linux originaltrue/false/
 false/true and Windowsfalse options restored with readback. Actual DVD playback
-acceptance remains separate VCE-005. MCP-RELEASE-015/public assets/catalog and
-independent Time Scroll remain open. The preparation paragraphs below describe
+acceptance remains separate VCE-005. Public assets now verify; MCP-RELEASE-015
+catalog acceptance and independent Time Scroll remain open. The preparation paragraphs below describe
 earlier local-only state and are superseded by this qualification, not erased.
 
 The user requests parallel completion of Client Extension release gates, with

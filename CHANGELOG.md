@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.1.5 - release preparation
+## 0.1.5 - 2026-10-09
+
+- Published the beta at exact source commit8bb3cff44b5eca18c7869f298705e2db7b8b4c37
+  after green required checks. Four independent public downloads match GitHub
+  digests and SHA256SUMS; catalog MD5e6d70dc8a8f374de6dbbd4e52cd4fc68 matches
+  the JAR ZIP. Matching catalog update is submitted as PR128, open/mergeable;
+  generated catalog availability still awaits upstream merge/regeneration.
 
 - Resolve an already indexed exact path through stock `GetMediaFileForFilePath`
   before enumerating unrelated media. Preserve canonical spelling, verified
@@ -28,8 +34,8 @@
 - Repair timestamp-suffixed Linux development metadata through a reviewed
   numeric catalog/public reinstall, not Core or registry edits. The real
   refresh notification parse error is reported; independent availability
-  verifies the intended version before install. Public hashes, exact-HEAD
-  green CI and catalog submission remain separate release requirements.
+  verifies the intended version before install. Public hashes and exact-HEAD
+  green CI now pass; catalog submission remains separate.
 
 ### Previously implemented commissioning controls
 
