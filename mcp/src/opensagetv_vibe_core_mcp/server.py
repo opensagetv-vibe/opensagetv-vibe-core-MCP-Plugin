@@ -40,6 +40,17 @@ def sage_capabilities(server: str = "") -> dict[str, Any]:
 
 
 @mcp.tool()
+def sage_server_activity(server: str = "") -> dict[str, Any]:
+    """Observe recordings/clients before a restart; never restart or stop them.
+
+    Recheck immediately before an authorized restart. A healthy zero-count
+    snapshot does not itself grant restart authority or reserve future idle.
+    Missing/failed bridge actions remain errors, never an idle fallback.
+    """
+    return _call("server.activity", server)
+
+
+@mcp.tool()
 def sage_ui_contexts(server: str = "") -> dict[str, Any]:
     return _call("ui.list", server)
 
@@ -56,9 +67,16 @@ def sage_resolve_media_path(path: str, server: str = "") -> dict[str, Any]:
 
 @mcp.tool()
 def sage_watch_media(context: str, path: str = "", media_file_id: int = 0,
-                     from_beginning: bool = False, server: str = "") -> dict[str, Any]:
+                     from_beginning: bool = False, wait_ms: int | None = None,
+                     server: str = "") -> dict[str, Any]:
+    """Request Watch; verify actual playback separately with state/diagnostics.
+
+    Ordinary Watch acknowledges promptly by default. Supply ``wait_ms`` only
+    when a bounded loaded-media observation is explicitly required.
+    """
     return _call("media.watch", server, context=context, path=path,
-                 media_id=media_file_id or None, from_beginning=from_beginning)
+                 media_id=media_file_id or None, from_beginning=from_beginning,
+                 wait_ms=wait_ms)
 
 
 @mcp.tool()
@@ -94,6 +112,19 @@ def sage_ui_command(context: str, command: str, server: str = "") -> dict[str, A
 @mcp.tool()
 def sage_scan_library(wait_until_done: bool = False, server: str = "") -> dict[str, Any]:
     return _call("library.scan", server, wait_until_done=wait_until_done)
+
+
+@mcp.tool()
+def sage_add_import_path(path: str, server: str = "") -> dict[str, Any]:
+    return _call("library.add_import_path", server, path=path)
+
+
+@mcp.tool()
+def sage_remove_import_path(path: str, confirm: bool = False,
+                            server: str = "") -> dict[str, Any]:
+    if not confirm:
+        raise ValueError("confirm=true is required because this changes library settings")
+    return _call("library.remove_import_path", server, path=path, confirm=True)
 
 
 @mcp.tool()

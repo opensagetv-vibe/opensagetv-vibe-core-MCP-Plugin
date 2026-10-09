@@ -1,5 +1,38 @@
 # Changelog
 
+- Add fail-closed, read-only stock server.activity restart preflight. Zero
+  UI clients alone is not idle proof; recording and connected-client counts
+  must also be zero. Expose it as sage_server_activity without stop/restart
+  authority; routing/error contracts pass. The actual deployment preflight
+  refuses active175 recordings before replacement. Physical deployment pending idle.
+
+- Add bounded companion commissioning controls for four fixed Boolean options
+  and a known DVD hook on one connected MiniClient, with checkpoint/readback
+  guards and third-party refusal. Focused stock175 control/restore and negative
+  guards pass; broader DVD/Windows gates remain separate;
+  this does not change normal runtime playback or expose an arbitrary API.
+
+## 0.1.4 - unreleased
+
+- Add bounded typed FFmpeg caption-listener commissioning through public
+  plugin APIs with confirmation, expected-value guard and readback. Scope/
+  restore contracts and authenticated stock175 false/true/false proof pass;
+  no arbitrary settings proxy or normal-playback MCP dependency.
+
+- Add the stock `Time Scroll` command to the bounded UI allowlist for
+  STV-owned DVD seek-cursor testing. It remains a supported SageCommand call,
+  not a new MiniClient protocol event or arbitrary API proxy.
+
+- Acknowledge ordinary exact-path `Watch` without synchronously polling the
+  replacing MiniClient decoder. Callers still verify playback separately;
+  explicit watch-from-beginning retains a bounded loaded-media wait and now
+  reports whether its initial seek was actually applied.
+- Preserve the stock `Sage.jar` API boundary and allow an explicit legacy
+  `wait_ms` request for commissioning clients that need the old behavior.
+- Allow temporary library-import commissioning to be undone through the stock
+  `RemoveLibraryImportPath` API, with explicit confirmation and exact-path
+  validation. This supports clean stock-server test teardown.
+
 ## 0.1.3 - 2026-09-29
 
 - Standardized impact-based release validation and the stock-server MCP-first

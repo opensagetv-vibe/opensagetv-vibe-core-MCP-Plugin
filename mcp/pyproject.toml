@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "opensagetv-vibe-core-mcp"
-version = "0.1.3"
+version = "0.1.4"
 description = "MCP adapter for the stock-compatible OpenSageTV Vibe Core Control Bridge"
 requires-python = ">=3.10"
 license = "Apache-2.0"

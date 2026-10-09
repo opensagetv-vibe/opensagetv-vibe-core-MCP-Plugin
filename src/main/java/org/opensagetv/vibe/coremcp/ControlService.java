@@ -20,17 +20,27 @@ final class ControlService {
     private static final Set<String> COMMANDS = Collections.unmodifiableSet(
             new LinkedHashSet<String>(Arrays.asList(
                     "TV", "Back", "Home", "Options", "Info", "Full Screen On", "Full Screen Off",
-                    "Play", "Pause", "Stop",
+                    "Play", "Pause", "Stop", "Time Scroll",
                     "Skip Fwd", "Skip Bkwd", "Channel Up", "Channel Down",
                     "Up", "Down", "Left", "Right", "Select",
                     "DVD Menu", "DVD Title Menu", "DVD Return",
                     "DVD Next Chapter", "DVD Prev Chapter",
                     "DVD Audio Change", "DVD Subtitle Change", "DVD Subtitle Toggle")));
     private static final List<String> ACTIONS = Collections.unmodifiableList(Arrays.asList(
-            "capabilities", "ui.list", "ui.state", "ui.command",
+            "capabilities", "server.activity", "ui.list", "ui.state", "ui.command",
             "media.resolve_exact_path", "media.watch", "media.seek", "media.control",
-            "media.clear_watched", "channel.tune", "captions.get", "captions.set",
-            "library.add_import_path", "library.scan", "diagnostics.snapshot"));
+            "media.clear_watched", "channel.tune", "captions.get", "captions.set", "captions.trace",
+            "library.add_import_path", "library.remove_import_path", "library.scan", "diagnostics.snapshot",
+            "plugin.config_get", "plugin.config_set",
+            "companion.config_get", "companion.config_set", "companion.dvd_hook"));
+    private final PluginCaptionSettings pluginCaptionSettings=new PluginCaptionSettings(
+            (name,arguments) -> api(name,arguments));
+    private final CompanionSettings companionSettings = new CompanionSettings(new CompanionSettings.Api() {
+        public Object global(String name, Object... arguments) { return api(name, arguments); }
+        public Object ui(String context, String name, Object... arguments) {
+            return apiUI(context, name, arguments);
+        }
+    });
     private volatile Map<String, Object> mediaPathIndex = Collections.emptyMap();
     private volatile long mediaPathIndexTime;
 
@@ -39,6 +49,7 @@ final class ControlService {
         if (!ACTIONS.contains(action)) throw new IllegalArgumentException("Unsupported action: " + action);
         Map<String, Object> result;
         if ("capabilities".equals(action)) result = capabilities();
+        else if ("server.activity".equals(action)) result = serverActivity();
         else if ("ui.list".equals(action)) result = uiList();
         else if ("ui.state".equals(action)) result = uiState(context(request));
         else if ("ui.command".equals(action)) result = uiCommand(context(request), required(request, "command"));
@@ -50,8 +61,33 @@ final class ControlService {
         else if ("channel.tune".equals(action)) result = tune(context(request), required(request, "channel"));
         else if ("captions.get".equals(action)) result = captionGet(context(request));
         else if ("captions.set".equals(action)) result = captionSet(context(request), required(request, "state"));
+        else if ("captions.trace".equals(action)) result = captionTrace(required(request, "state"));
         else if ("library.add_import_path".equals(action)) result = libraryAddImportPath(request);
+        else if ("library.remove_import_path".equals(action)) result = libraryRemoveImportPath(request);
         else if ("library.scan".equals(action)) result = libraryScan(bool(request, "wait_until_done", false));
+        else if ("plugin.config_get".equals(action) || "plugin.config_set".equals(action)) {
+            result=map();
+            String plugin=required(request,"plugin_id"), setting=required(request,"setting");
+            String value="plugin.config_get".equals(action)
+                    ? pluginCaptionSettings.get(plugin,setting)
+                    : pluginCaptionSettings.set(plugin,setting,required(request,"expected"),
+                            required(request,"value"),bool(request,"confirm",false));
+            result.put("pluginId",plugin); result.put("setting",setting); result.put("value",value);
+        }
+        else if ("companion.config_get".equals(action) || "companion.config_set".equals(action)) {
+            result = map();
+            String key = required(request, "setting");
+            String value = "companion.config_get".equals(action) ? companionSettings.get(key)
+                    : companionSettings.set(key, required(request, "expected"),
+                            required(request, "value"), bool(request, "confirm", false));
+            result.put("setting", key); result.put("value", value);
+        }
+        else if ("companion.dvd_hook".equals(action)) {
+            Boolean enabled = request.containsKey("enabled")
+                    ? CompanionSettings.enabledValue(request.get("enabled")) : null;
+            result = companionSettings.hook(context(request), request.get("expected"),
+                    enabled, bool(request, "confirm", false));
+        }
         else result = diagnostics(request.get("context"));
         result.put("ok", Boolean.TRUE);
         result.put("action", action);
@@ -78,6 +114,29 @@ final class ControlService {
         out.put("contexts", strings(api("GetUIContextNames")));
         out.put("connectedClients", strings(api("GetConnectedClients")));
         return out;
+    }
+
+    /** Read-only public-API preflight; zero UI clients alone is not idle proof. */
+    private Map<String, Object> serverActivity() {
+        int recordings = recordingCount(api("GetCurrentlyRecordingMediaFiles"));
+        int contexts = activityArrayCount(api("GetUIContextNames"), "UI context");
+        int clients = activityArrayCount(api("GetConnectedClients"), "Connected client");
+        Map<String, Object> out = map();
+        out.put("recordingCount", Integer.valueOf(recordings));
+        out.put("uiContextCount", Integer.valueOf(contexts));
+        out.put("connectedClientCount", Integer.valueOf(clients));
+        out.put("safeToRestart", Boolean.valueOf(recordings == 0 && contexts == 0 && clients == 0));
+        return out;
+    }
+
+    static int recordingCount(Object recordingFiles) {
+        return activityArrayCount(recordingFiles, "Recording");
+    }
+
+    static int activityArrayCount(Object values, String label) {
+        if (!(values instanceof Object[]))
+            throw new IllegalStateException(label + " status unavailable; not idle proof");
+        return ((Object[]) values).length;
     }
 
     private Map<String, Object> uiState(String context) {
@@ -149,9 +208,13 @@ final class ControlService {
         else media = resolveExactPath(required(request, "path"));
         int id = mediaId(media);
         apiUI(context, "Watch", new Object[]{media});
-        int waitMs = intValue(request, "wait_ms", 15000, 1000, 60000);
-        boolean observed = waitForMedia(context, id, waitMs);
+        // Watch is a request, not a playback-health test. On stock Core the
+        // media-state APIs below may cross a MiniClient decoder/socket while
+        // it is being replaced. Do not hold the authenticated HTTP request on
+        // that path unless the caller explicitly asks for the legacy wait.
         boolean fromBeginning = bool(request, "from_beginning", false);
+        int waitMs = intValue(request, "wait_ms", defaultWatchWaitMs(fromBeginning), 0, 60000);
+        boolean observed = waitMs > 0 && waitForMedia(context, id, waitMs);
         Long soughtTo = null;
         if (observed && fromBeginning) {
             long start = seekStart(context);
@@ -164,6 +227,7 @@ final class ControlService {
         out.put("accepted", Boolean.TRUE);
         out.put("observed", Boolean.valueOf(observed));
         out.put("fromBeginning", Boolean.valueOf(fromBeginning));
+        out.put("fromBeginningApplied", Boolean.valueOf(soughtTo != null));
         if (soughtTo != null) out.put("seekTargetMs", soughtTo);
         /*
          * Do not append uiState() here.  A DVD Watch can be accepted while
@@ -251,6 +315,10 @@ final class ControlService {
         Map<String, Object> out = map();
         out.put("context", context);
         out.put("state", string(apiUI(context, "GetMediaPlayerClosedCaptionState")));
+        out.put("stvFile", string(apiUI(context, "GetCurrentSTVFile")));
+        String trace = string(api("GetProperty", new Object[]{"cc_debug", "__VIBE_UNSET__"}));
+        out.put("ccTracePropertyPresent", Boolean.valueOf(!"__VIBE_UNSET__".equals(trace)));
+        out.put("ccTraceEnabled", Boolean.valueOf("true".equalsIgnoreCase(trace)));
         return out;
     }
 
@@ -265,6 +333,23 @@ final class ControlService {
         else throw new IllegalArgumentException("Caption state must be Off, CC1, CC2, Text1, or Text2");
         apiUI(context, "SetMediaPlayerClosedCaptionState", new Object[]{normalized});
         return captionGet(context);
+    }
+
+    private Map<String, Object> captionTrace(String rawState) {
+        String state = rawState.trim();
+        if ("on".equalsIgnoreCase(state))
+            api("SetProperty", new Object[]{"cc_debug", "true"});
+        else if ("off".equalsIgnoreCase(state))
+            api("SetProperty", new Object[]{"cc_debug", "false"});
+        else if ("clear".equalsIgnoreCase(state))
+            api("RemoveProperty", new Object[]{"cc_debug"});
+        else
+            throw new IllegalArgumentException("Caption trace state must be on, off, or clear");
+        Map<String, Object> out = map();
+        String configured = string(api("GetProperty", new Object[]{"cc_debug", "__VIBE_UNSET__"}));
+        out.put("ccTracePropertyPresent", Boolean.valueOf(!"__VIBE_UNSET__".equals(configured)));
+        out.put("ccTraceEnabled", Boolean.valueOf("true".equalsIgnoreCase(configured)));
+        return out;
     }
 
     private Map<String, Object> libraryScan(boolean wait) {
@@ -289,6 +374,34 @@ final class ControlService {
         Map<String, Object> out = map();
         out.put("path", directory.getPath());
         out.put("added", Boolean.TRUE);
+        return out;
+    }
+
+    private Map<String, Object> libraryRemoveImportPath(Map<String, String> request) {
+        if (!bool(request, "confirm", false))
+            throw new IllegalArgumentException("confirm=true is required");
+        File directory;
+        try { directory = new File(required(request, "path")).getCanonicalFile(); }
+        catch (IOException error) { throw new IllegalArgumentException("Invalid library import path"); }
+        if (!directory.isAbsolute())
+            throw new IllegalArgumentException("Library import path must be absolute");
+        boolean found = false;
+        for (Object existing : objects(api("GetLibraryImportPaths"))) {
+            if (!(existing instanceof File)) continue;
+            try {
+                if (directory.equals(((File) existing).getCanonicalFile())) {
+                    found = true;
+                    break;
+                }
+            } catch (IOException error) { /* An unreadable, unrelated import cannot match. */ }
+        }
+        if (!found) throw new IllegalArgumentException("Path is not a library import path");
+        api("RemoveLibraryImportPath", new Object[]{directory});
+        mediaPathIndex = Collections.emptyMap();
+        mediaPathIndexTime = 0;
+        Map<String, Object> out = map();
+        out.put("path", directory.getPath());
+        out.put("removed", Boolean.TRUE);
         return out;
     }
 
@@ -401,6 +514,12 @@ final class ControlService {
             catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); return false; }
         }
         return false;
+    }
+
+    static int defaultWatchWaitMs(boolean fromBeginning) {
+        // A requested restart needs a loaded seek window; an ordinary Watch
+        // must acknowledge immediately and let the caller verify playback.
+        return fromBeginning ? 15000 : 0;
     }
 
     private long seekStart(String context) {

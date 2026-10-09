@@ -1,5 +1,21 @@
 # OpenSageTV Vibe Core MCP Plugin
 
+Read-only `server.activity` reports recording, UI-context and connected-client
+counts through stock APIs, exposed as the `sage_server_activity` MCP tool.
+`safeToRestart` requires every count to be zero;
+unknown status is an error, not idle. Always recheck immediately before a
+restart; a user-approved window alone does not authorize interrupting
+recordings. This action's physical commissioning is tracked in MCP-ACTIVITY-001.
+
+Companion commissioning optionally uses `companion.config_get/set` for only
+`enabled`, `reload.recovery`, `trace.dvd`, `dvd.tv_skip_keys`; writes require
+`confirm=true`, Boolean `value` and matching `expected`. `companion.dvd_hook`
+inspects one exact connected12-hex MiniClient; an explicit Boolean `enabled`
+requires confirmation and the exact prior blank/known-adapter `expected`.
+It never accepts arbitrary class names or replaces another third-party player.
+Checkpoint and restore every borrowed value, including the UI hook, even on
+failure. This is test control, not a normal playback dependency.
+
 Stock-compatible SageTV server control for deterministic commissioning and MCP automation.
 
 The project contains two deliberately separated components:
@@ -15,11 +31,18 @@ The bridge does not patch `Sage.jar`, add MiniClient wire events, replace Sagex,
 - Resolve a SageTV-indexed MediaFile by exact server path or MediaFile ID.
 - Watch media, including a verified watch-from-beginning sequence.
 - Query active media, playback time, duration, seek window, rate, and caption state.
+- Commission only the installed FFmpeg plugin's caption-listener Boolean
+  through bounded public plugin APIs, with confirmation, expected-value
+  protection and readback. Restore the checkpointed value after testing;
+  this is not a general plugin-settings proxy or playback dependency.
 - Play, pause, stop, seek, skip, and set supported playback rates.
 - Tune an exact channel.
 - Get/set stock SageTV CC state.
 - Send a small allowlisted set of Sage commands such as `TV`, `Back`, `Home`,
   and the stock DVD menu/chapter/audio/subtitle commands.
+  The current validation candidate also permits `Time Scroll`. This is a
+  stateful STV seek-cursor command, not a timeline keepalive: send it once to
+  enter, adjust with primary Skip Fwd/Bkwd, then send it once to commit.
 - Run the ordinary SageTV library import scan.
 - Clear watched state for one explicitly identified MediaFile.
 - Return a bounded diagnostic snapshot.
@@ -51,9 +74,14 @@ Or place it at `.deps/stock/Sage.jar`. Compile-only SageTV classes are never pac
 
 The source repository is public at
 <https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin>.
-Version 0.1.3 is the approved release candidate. Versioned release artifacts
+Version 0.1.4 is an unreleased validation candidate. Versioned release artifacts
 and the SageTV plugin-catalog entry are published only from the deterministic
 packages produced by `dev.cmd all`.
+
+Ordinary `media.watch` now acknowledges the stock `Watch` request without a
+decoder-state wait; the caller must then verify playback through `ui.state` or
+client diagnostics. `from_beginning=true` retains a bounded load/seek wait and
+reports `fromBeginningApplied=false` if the seek could not yet be applied.
 
 ## Local MCP configuration
 

@@ -108,6 +108,10 @@ def test() -> None:
     run(["java", "--add-modules", "jdk.httpserver", "-cp",
          os.pathsep.join((str(jar), str(CLASSES), str(TEST_CLASSES))),
          "org.opensagetv.vibe.coremcp.ContractTest"])
+    run(["java", "-cp", os.pathsep.join((str(jar), str(CLASSES), str(TEST_CLASSES))),
+         "org.opensagetv.vibe.coremcp.PluginCaptionSettingsTest"])
+    run(["java", "-cp", os.pathsep.join((str(jar), str(CLASSES), str(TEST_CLASSES))),
+         "org.opensagetv.vibe.coremcp.CompanionSettingsTest"])
     suite = unittest.defaultTestLoader.discover(str(ROOT / "tests"), pattern="test_*.py")
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     if not result.wasSuccessful():
@@ -137,7 +141,7 @@ def validate() -> None:
 
     properties = release_properties()
     expected_properties = {
-        "VERSION": "0.1.3",
+        "VERSION": "0.1.4",
         "PACKAGE_ID": "opensagetv-vibe-core-MCP-Plugin",
         "REQUIRES_BUILD": "true",
         "PUBLISH_APPROVED": "true",

@@ -25,7 +25,7 @@ public final class ContractTest {
         if (ControlService.CAPABILITY_VERSION != 1)
             throw new AssertionError("Unexpected capability version");
         for (String command : Arrays.asList(
-                "Full Screen On", "Full Screen Off",
+                "Full Screen On", "Full Screen Off", "Time Scroll",
                 "DVD Menu", "DVD Title Menu", "DVD Return",
                 "DVD Next Chapter", "DVD Prev Chapter", "DVD Audio Change",
                 "DVD Subtitle Change", "DVD Subtitle Toggle")) {
@@ -36,8 +36,30 @@ public final class ContractTest {
             throw new AssertionError("Arbitrary command unexpectedly allowlisted");
         if (!ControlService.isActionAllowed("library.add_import_path"))
             throw new AssertionError("Missing stock AddLibraryImportPath commissioning action");
+        if (!ControlService.isActionAllowed("library.remove_import_path"))
+            throw new AssertionError("Missing stock RemoveLibraryImportPath cleanup action");
+        if (!ControlService.isActionAllowed("captions.trace"))
+            throw new AssertionError("Missing bounded stock caption trace action");
         if (ControlService.isActionAllowed("filesystem.read"))
             throw new AssertionError("Arbitrary filesystem action unexpectedly allowlisted");
+        if (!ControlService.isActionAllowed("server.activity"))
+            throw new AssertionError("Missing read-only stock activity preflight");
+        if (ControlService.recordingCount(new Object[0]) != 0 ||
+                ControlService.recordingCount(new Object[]{new Object(), new Object(), new Object()}) != 3)
+            throw new AssertionError("Bad recording count");
+        for (Object unavailable : new Object[]{null, "unavailable", Integer.valueOf(0)}) {
+            try {
+                ControlService.recordingCount(unavailable);
+                throw new AssertionError("Unknown activity must not mean idle");
+            } catch (IllegalStateException expectedUnavailable) { }
+            try {
+                ControlService.activityArrayCount(unavailable, "UI context");
+                throw new AssertionError("Unknown clients must not mean idle");
+            } catch (IllegalStateException expectedUnavailable) { }
+        }
+        if (ControlService.defaultWatchWaitMs(false) != 0 ||
+                ControlService.defaultWatchWaitMs(true) != 15000)
+            throw new AssertionError("Watch must acknowledge ordinary playback without media-state polling");
         assertDvdControl("DVD Menu", false, 201, 2);
         assertDvdControl("DVD Return", false, 209, 0);
         assertDvdControl("Down", true, 210, 3);
