@@ -4,6 +4,10 @@
 
 ## 0.1.6 - 2026-10-16
 
+- Published immutable beta assets after exact-source green CI; all four public
+  downloads independently match hashes. Matching catalogPR129 is submitted,
+  pending upstream approval/aggregation. Later tracking docs change no runtime.
+
 - Version the diagnostic commissioning and selected-UI STVI controls without
   changing published0.1.5 artifacts. Keep stock-JAR/Java8 compatibility and
   the authenticated bounded API; no normal playback dependency is introduced.

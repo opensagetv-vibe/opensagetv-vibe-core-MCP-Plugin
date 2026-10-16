@@ -7,13 +7,6 @@
 
 This file records only the current project state.
 
-- [ ] **MCP-RELEASE-016 - Approved0.1.6 release and catalog submission.**
-  Publish qualified diagnostic-control/selected-UI commissioning changes;
-  stock-JAR Java8/sixJava/tenPython/source/package gates pass, prior physical
-  evidence remains scoped. Require exact-HEAD CI, independent public digest/
-  ZIP/XML verification and new catalog submission; never overwrite0.1.5.
-  Independent Time Scroll acceptance remains separate.
-
 - [ ] **MCP-TIMESCROLL-001 - Independent Time Scroll bridge command gate.**
   Retained from the0.1.4 publication task's deployment acceptance: include the
   allowlist in the next safe stock-server bridge gate. Java8/contracts and
@@ -22,6 +15,17 @@ This file records only the current project state.
   skip/commit/cancel and do not infer a new production MiniClient event.
 
 ## Checklist change ledger
+
+- [x] **MCP-RELEASE-016 -0.1.6 published and catalog submitted.**
+  User-approved qualified diagnostic/selected-UI control update: stock-JAR
+  Java8/sixJava/tenPython/source/package and exact-source CI38911062248 pass.
+  Release source7734a58, four independent public downloads match GitHub/
+  canonical hashes; ZIP8c36a69f/MD5e8810319 exactly matches catalogPR129 leaf.
+  PR129 is OPEN/MERGEABLE/no registered checks, not merged/live availability.
+  Immutable0.1.5 unchanged; new0.1.6 remains pinned to its tested runtime source.
+  This follow-up changes tracking docs only. Independent Time Scroll remains
+  open; no extra stock install/restart or unrelated matrix rerun. Evidence:
+  `artifacts/results/MCP-RELEASE-016/publication.json`.
 
 - 2026-10-16 pre-commit release review: completed checkoffs remain only in this
   ledger; user authorizes MCP-RELEASE-016, affected contracts/package pass.

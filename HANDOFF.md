@@ -1,5 +1,18 @@
 # Handoff
 
+## MCP-RELEASE-016 published / catalog submitted (2026-10-16)
+
+Completed at source7734a58b35dd095acec4cabe8fe905311c76aeb7, green requiredCI
+38911062248. Immutablev0.1.6 has four public assets independently downloaded
+and matched to GitHub digests/canonical packages. JAR ZIP SHA256
+8c36a69f520cc88f1f00f429852714d45ddadf04d088db009c34d2fd5f97ee1c;
+catalogMD5 e881031947b282b7aedcefe06681f0f2. New catalogPR129 is OPEN/MERGEABLE
+with no registered checks, not approved/aggregated availability. Previous128
+is merged. Compact publication.json under results/MCP-RELEASE-016 is authority.
+This post-publication tracking commit changes docs only:0.1.6 runtime/version/
+packages remain pinned to7734a58; do not rewrite its tag/assets or rebuild merely
+for task tracking. MCP-TIMESCROLL-001 and companion DVD release gates remain.
+
 ## Approved0.1.6 publication candidate (2026-10-16)
 
 User authorizes changed-source push and qualified plugin publication.

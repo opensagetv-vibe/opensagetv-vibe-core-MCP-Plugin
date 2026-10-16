@@ -9,6 +9,12 @@ The independent Time Scroll physical gate remains open. Release artifacts and
 catalog submission are distinct; upstream approval/regeneration is required
 before plugin-manager availability.
 
+[0.1.6 beta release](https://github.com/opensagetv-vibe/opensagetv-vibe-core-MCP-Plugin/releases/tag/v0.1.6)
+is published with four independently verified assets. Its matching SageTV
+catalog update is [PR129](https://github.com/OpenSageTV/sagetv-plugin-repo/pull/129),
+submitted/open; the earlier0.1.5 PR128 has merged. Pending review/aggregation
+is not proof that0.1.6 already appears in the plugin manager.
+
 Read-only `server.activity` reports recording, UI-context and connected-client
 counts through stock APIs, exposed as the `sage_server_activity` MCP tool.
 `safeToRestart` requires every count to be zero;
