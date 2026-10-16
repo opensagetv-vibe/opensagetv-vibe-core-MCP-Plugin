@@ -16,6 +16,10 @@ This file records only the current project state.
 
 ## Checklist change ledger
 
+- 2026-10-16 post-publication catalog check:PR129 is MERGED at3f910892;
+  generated regular/Beta feeds still have no MCP entry. No pending review,
+  live availability claim, runtime/version change or package replacement.
+
 - [x] **MCP-RELEASE-016 -0.1.6 published and catalog submitted.**
   User-approved qualified diagnostic/selected-UI control update: stock-JAR
   Java8/sixJava/tenPython/source/package and exact-source CI38911062248 pass.

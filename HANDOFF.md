@@ -2,6 +2,10 @@
 
 ## MCP-RELEASE-016 published / catalog submitted (2026-10-16)
 
+Follow-up:PR129 is MERGED at3f910892a749d6079cf45cc2168f3f064c11c52f;
+both generated regular/Beta catalogs still have no MCP entry. Publication and
+catalog submission/merge are done; only external aggregation remains.
+
 Completed at source7734a58b35dd095acec4cabe8fe905311c76aeb7, green requiredCI
 38911062248. Immutablev0.1.6 has four public assets independently downloaded
 and matched to GitHub digests/canonical packages. JAR ZIP SHA256
