@@ -11,7 +11,7 @@ public final class CompanionSettingsTest {
         final Map<String, String> players = new HashMap<String, String>();
         boolean available = true, refuse, duplicate, missingOption, pluginDisabled;
         int writes;
-        Api() { settings.put("enabled", "false"); settings.put("reload.recovery", "false"); }
+        Api() { settings.put("enabled", "false"); settings.put("reload.recovery", "false"); settings.put("diagnostics.enabled", "false"); }
         public Object global(String name, Object... args) {
             if (name.equals("GetInstalledPlugins")) return !available ? new Object[0]
                     : duplicate ? new Object[]{plugin, plugin} : new Object[]{plugin};
@@ -20,7 +20,7 @@ public final class CompanionSettingsTest {
             check(args[0] == plugin, "typed installed plugin only");
             if (name.equals("IsPluginEnabled")) return !pluginDisabled;
             if (name.equals("GetPluginConfigSettings")) return missingOption
-                    ? new String[]{"enabled"} : new String[]{"enabled", "reload.recovery", "trace.dvd", "dvd.tv_skip_keys"};
+                    ? new String[]{"enabled"} : new String[]{"enabled", "reload.recovery", "trace.dvd", "dvd.tv_skip_keys", "diagnostics.enabled"};
             if (name.equals("GetPluginConfigValue")) return settings.get(args[1]);
             if (name.equals("SetPluginConfigValue")) {
                 writes++; if (refuse) return "refused";
@@ -44,6 +44,13 @@ public final class CompanionSettingsTest {
     public static void main(String[] args) {
         Api api = new Api(); CompanionSettings service = new CompanionSettings(api);
         check(service.get("enabled").equals("false"), "effective default");
+        check(service.get("diagnostics.enabled").equals("false"), "diagnostic opt-in default");
+        rejects(() -> service.set("diagnostics.enabled", "false", "true", false));
+        service.set("diagnostics.enabled", "false", "true", true);
+        rejects(() -> service.set("diagnostics.enabled", "false", "false", true));
+        service.set("diagnostics.enabled", "true", "false", true);
+        rejects(() -> service.get("diagnostics.port"));
+        api.writes = 0;
         rejects(() -> CompanionSettings.enabledValue("arbitrary"));
         check(CompanionSettings.enabledValue("true").booleanValue(), "strict hook Boolean");
         service.hook(UI, null, null, false); check(api.writes == 0, "inspection is read-only");
@@ -66,6 +73,7 @@ public final class CompanionSettingsTest {
         api.available = false; rejects(() -> service.get("enabled")); api.available = true;
         api.pluginDisabled = true; rejects(() -> service.get("enabled")); api.pluginDisabled = false;
         api.missingOption = true; rejects(() -> service.get("reload.recovery")); api.missingOption = false;
+        api.missingOption = true; rejects(() -> service.get("diagnostics.enabled")); api.missingOption = false;
         api.duplicate = true; rejects(() -> service.get("enabled")); api.duplicate = false;
         api.refuse = true; rejects(() -> service.set("enabled", "false", "true", true));
         api.refuse = false;

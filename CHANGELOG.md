@@ -1,5 +1,34 @@
 # Changelog
 
+## Unreleased
+
+## 0.1.6 - 2026-10-16
+
+- Version the diagnostic commissioning and selected-UI STVI controls without
+  changing published0.1.5 artifacts. Keep stock-JAR/Java8 compatibility and
+  the authenticated bounded API; no normal playback dependency is introduced.
+
+- Add bounded stock-API commissioning for only the reviewed `AutoAspect` and
+  `nielm_autoaspect` compatibility fixtures. Require exact available version,
+  compatible metadata, known UI context and explicit confirmation; accept no
+  caller URL/path/class/API/arbitrary ID. Follow stock STVI enable/reload order
+  in the selected UI and require its enabled readback. Global STVI calls can
+  return a misleading success/false state because they have no UIManager.
+  Passive Library dependencies require no activation. Java8 and all
+  focused/existing tests pass; `.232` physical import/activation is proven with
+  Sage.jar and root FFmpeg unchanged.
+
+- Qualify the diagnostic receiver Boolean control on stock Linux175 and stock
+  Windows185; retain default-Off restoration, expected-value/confirmation and
+  stock Core compatibility. This does not rewrite published0.1.5 artifacts.
+
+- Allow only the companion's diagnostics.enabled Boolean in existing
+  confirmed/expected-value/readback test controls. Missing/disabled/old
+  plugins and arbitrary ports/paths remain refused. Normal diagnostic uploads
+  and web viewing do not require MCP. Stock-JAR contracts pass; Windows
+  readback/restoration qualifies the control,232 commissioning remains.
+  Published0.1.5 assets are unchanged.
+
 ## 0.1.5 - 2026-10-09
 
 - Published the beta at exact source commit8bb3cff44b5eca18c7869f298705e2db7b8b4c37

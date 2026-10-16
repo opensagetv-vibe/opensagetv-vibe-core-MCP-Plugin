@@ -32,6 +32,7 @@ final class ControlService {
             "media.clear_watched", "channel.tune", "captions.get", "captions.set", "captions.trace",
             "library.add_import_path", "library.remove_import_path", "library.scan", "diagnostics.snapshot",
             "plugin.config_get", "plugin.config_set",
+            "plugin.commission_available", "plugin.commission_install",
             "companion.config_get", "companion.config_set", "companion.dvd_hook",
             "companion.available", "companion.status", "companion.install"));
     private final PluginCaptionSettings pluginCaptionSettings=new PluginCaptionSettings(
@@ -44,6 +45,12 @@ final class ControlService {
     });
     private volatile Map<String, Object> mediaPathIndex = Collections.emptyMap();
     private final CompanionInstaller companionInstaller = new CompanionInstaller(new CompanionSettings.Api() {
+        public Object global(String name, Object... arguments) { return api(name, arguments); }
+        public Object ui(String context, String name, Object... arguments) {
+            return apiUI(context, name, arguments);
+        }
+    });
+    private final PluginCommissioner pluginCommissioner = new PluginCommissioner(new CompanionSettings.Api() {
         public Object global(String name, Object... arguments) { return api(name, arguments); }
         public Object ui(String context, String name, Object... arguments) {
             return apiUI(context, name, arguments);
@@ -80,6 +87,14 @@ final class ControlService {
                     : pluginCaptionSettings.set(plugin,setting,required(request,"expected"),
                             required(request,"value"),bool(request,"confirm",false));
             result.put("pluginId",plugin); result.put("setting",setting); result.put("value",value);
+        }
+        else if ("plugin.commission_available".equals(action)) {
+            result = pluginCommissioner.available(required(request, "plugin_id"),
+                    bool(request, "refresh", false));
+        }
+        else if ("plugin.commission_install".equals(action)) {
+            result = pluginCommissioner.install(context(request), required(request, "plugin_id"),
+                    required(request, "expected_version"), bool(request, "confirm", false));
         }
         else if ("companion.config_get".equals(action) || "companion.config_set".equals(action)) {
             result = map();

@@ -1,5 +1,14 @@
 # OpenSageTV Vibe Core MCP Plugin
 
+Release line **0.1.6** adds the bounded diagnostic-receiver control and
+reviewed AutoAspect commissioning, including selected-UI STVI enable/readback.
+Stock-JAR Java8 and focused Java/Python contracts pass. Diagnostic controls
+have stock Linux/Windows proof; new AutoAspect import/activation proof is on
+the isolated Vibe test server, not a new stock-platform playback matrix.
+The independent Time Scroll physical gate remains open. Release artifacts and
+catalog submission are distinct; upstream approval/regeneration is required
+before plugin-manager availability.
+
 Read-only `server.activity` reports recording, UI-context and connected-client
 counts through stock APIs, exposed as the `sage_server_activity` MCP tool.
 `safeToRestart` requires every count to be zero;
@@ -9,7 +18,9 @@ recordings. MCP-ACTIVITY-001 now records stock Linux/Windows physical idle
 readback and an active Windows UI yielding `safeToRestart=false`.
 
 Companion commissioning optionally uses `companion.config_get/set` for only
-`enabled`, `reload.recovery`, `trace.dvd`, `dvd.tv_skip_keys`; writes require
+`enabled`, `reload.recovery`, `trace.dvd`, `dvd.tv_skip_keys`; the current
+unreleased candidate also allowlists `diagnostics.enabled` for companion
+receiver tests, not arbitrary diagnostic ports or file paths. Writes require
 `confirm=true`, Boolean `value` and matching `expected`. `companion.dvd_hook`
 inspects one exact connected12-hex MiniClient; an explicit Boolean `enabled`
 requires confirmation and the exact prior blank/known-adapter `expected`.
@@ -68,6 +79,15 @@ separate Client Extension gate. Version 0.1.5 is now a published beta.
   through bounded public plugin APIs, with confirmation, expected-value
   protection and readback. Restore the checkpointed value after testing;
   this is not a general plugin-settings proxy or playback dependency.
+- Commission only the reviewed `AutoAspect`/`nielm_autoaspect` compatibility
+  fixtures through the direct bridge actions `plugin.commission_available`
+  and `plugin.commission_install`. Installation requires an exact numeric
+  available version, an existing UI context and `confirm=true`; callers cannot
+  supply a URL, path, class, API name or alternate plugin ID. An STVI follows
+  stock SageTV's enable/current-STV-reload activation order, using the exact
+  selected UI for compatibility, enable and readback. An STVI must report
+  enabled after reload. A Library dependency is passive and requires no
+  enable/disable lifecycle; its false enable readback is reported separately.
 - Play, pause, stop, seek, skip, and set supported playback rates.
 - Tune an exact channel.
 - Get/set stock SageTV CC state.

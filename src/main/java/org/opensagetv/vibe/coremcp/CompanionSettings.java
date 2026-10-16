@@ -21,7 +21,7 @@ final class CompanionSettings {
     static final String PLAYER = "org.opensagetv.vibe.clientextension.ClientExtensionDvdPlayer";
     static final String PROPERTY = "media_player_plugin_class/dvd";
     private static final List<String> KEYS = Arrays.asList(
-            "enabled", "reload.recovery", "trace.dvd", "dvd.tv_skip_keys");
+            "enabled", "reload.recovery", "trace.dvd", "dvd.tv_skip_keys", "diagnostics.enabled");
     private final Api api;
     CompanionSettings(Api api) { this.api = api; }
 

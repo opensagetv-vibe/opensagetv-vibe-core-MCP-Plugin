@@ -7,6 +7,12 @@
 
 This file records only the current project state.
 
+- [ ] **MCP-RELEASE-016 - Approved0.1.6 release and catalog submission.**
+  Publish qualified diagnostic-control/selected-UI commissioning changes;
+  stock-JAR Java8/sixJava/tenPython/source/package gates pass, prior physical
+  evidence remains scoped. Require exact-HEAD CI, independent public digest/
+  ZIP/XML verification and new catalog submission; never overwrite0.1.5.
+  Independent Time Scroll acceptance remains separate.
 
 - [ ] **MCP-TIMESCROLL-001 - Independent Time Scroll bridge command gate.**
   Retained from the0.1.4 publication task's deployment acceptance: include the
@@ -16,6 +22,62 @@ This file records only the current project state.
   skip/commit/cancel and do not infer a new production MiniClient event.
 
 ## Checklist change ledger
+
+- 2026-10-16 pre-commit release review: completed checkoffs remain only in this
+  ledger; user authorizes MCP-RELEASE-016, affected contracts/package pass.
+  No unrelated physical matrix or stock server/Core change is required by the
+  version-only final packaging. Workspace publication order reviewed374.
+
+- [x] **MCP-PLUGIN-COMMISSION-002 - Correct STVI UI-scoped activation
+  (2026-10-16; parent Android ONN-003).** Global EnablePlugin can acknowledge
+  without a UIManager and global IsPluginEnabled returns false for STVIs.
+  Compatibility/enable/readback now use the exact selected UI; require true
+  after STV reload. Passive Library dependencies have no activation lifecycle.
+  Stock-JAR Java8/six Java/ten Python tests pass, including ineffective-enable
+  rejection and passive-Library coverage. Final232 bridge8a866bb7 actual
+  AutoAspect installation/reload returns OK/enabledtrue/activationRequiredtrue;
+  guarded plugin-only restart preserves Core/FFmpeg hashes. Actual runtime
+  scope is232; no new stock175/185 physical claim, Core patch or release.
+  Android136prefs/power restored; OSD defect remains open after non-reproduction.
+  Compact evidence: `artifacts/results/MCP-PLUGIN-COMMISSION-002/RESULT.md`.
+
+- [x] **MCP-PLUGIN-COMMISSION-001 - Bounded AutoAspect compatibility-gate
+  commissioning.** Added direct bridge actions for only reviewed plugin IDs
+  `AutoAspect` and `nielm_autoaspect`. Availability may refresh the stock
+  repository; installation requires an exact available version, known UI
+  context, compatibility, and `confirm=true`, and accepts no caller URL, path,
+  class, API name or arbitrary ID. STVI activation follows SageTV's stock
+  enable-then-current-STV-reload order. Its original global false readback was
+  misdiagnosed as unreliable; MCP-PLUGIN-COMMISSION-002 corrects that API scope
+  and requires selected-UI activation. Library dependencies are passive.
+  Java8, focused commissioner and all
+  existing Java/Python tests pass. On `.232`, official AutoAspect1.3.4 and
+  nielm_autoaspect1.3.1 installed/imported, server logs proved activation, and
+  protected Sage.jar/root FFmpeg remained unchanged. This is bounded test
+  commissioning, not arbitrary plugin management or a normal playback
+  dependency.
+
+- [x] **MCP-DIAGNOSTICS-001 - Companion receiver opt-in commissioning.**
+  Original acceptance/dependency of VCE-011/012 and Android DIAG-002: extend
+  existing confirmed expected-value/readback Boolean controls with only
+  diagnostics.enabled; refuse unknown/missing/disabled plugins and arbitrary
+  non-Boolean/path/port settings; verify stockLinux/Windows restoration. This
+  is test control, not a runtime upload dependency or published0.1.5 update.
+  Five stock-JAR Java/10Python contracts pass; same71befa1d source candidate
+  physically restoresfalse/true/false on earlier stockWindows185 and now
+  stockLinux175. Protected Core unchanged, actual receiver capability on175
+  verified and originalOff restored. Companion compact175-diagnostic-update
+  and previous Windows partial report preserve distinct physical scope.
+  Qualified control only, no full client upload/DVD/release claim. Immutable
+  published0.1.5c1383fbf unchanged; any new release must be separately versioned.
+
+- [x] **MCP-DIAGNOSTICS-001232 bootstrap/control sub-gate (2026-10-10).**
+  Explicit one-time UNKNOWN-recording bootstrap approved/consumed once;
+ 71befa1d health0.1.5/expected232IP/post-activityidle, Core/FFmpeg unchanged,
+  prior6fff42f0 verified rollback retained. Actual diagnostics.enabled false/
+  true/false API readback and restoration supports VCE-011232 uploads. Values
+  are documented Boolean strings. No published0.1.5 rewrite, no Core patch,
+  and232 is not the still-open stockLinux commissioning requirement.
 
 - [x] **MCP-RELEASE-015 - Publish qualified 0.1.5 commissioning dependency.**
   User requests completion of Client Extension release and permits bounded

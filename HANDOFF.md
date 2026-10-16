@@ -1,5 +1,91 @@
 # Handoff
 
+## Approved0.1.6 publication candidate (2026-10-16)
+
+User authorizes changed-source push and qualified plugin publication.
+Release metadata/Java/Python versions are0.1.6; deterministic package date is
+2026-10-16. Stock-JAR Java8/six Java/ten Python/source/package pass.
+Existing stock175/185 diagnostic-control restoration and232 selected-UI
+AutoAspect activation are the affected physical evidence; no new stock
+AutoAspect or Time Scroll physical claim. Publish only after exact-HEAD CI,
+independently verify public package hashes, then submit the matching catalog
+leaf. Prior catalogPR128 is now MERGED; use a new branch/PR, not its old head.
+Immutable0.1.5 assets must not be overwritten. Normal playback still needs no
+MCP plugin and stockCore/server files remain protected.
+
+## ONN-003 selected-UI commissioning correction (2026-10-16)
+
+MCP-PLUGIN-COMMISSION-002 corrects the earlier false-readback explanation:
+stock STVI IsPluginEnabled and EnablePlugin require the exact UIManager via
+apiUI. Global calls return false / can acknowledge without setting that UI's
+flag. Install compatibility, enable and readback now use the selected context;
+STVI reload must end with enabled=true. Library dependencies are passive and
+do not have an enable lifecycle. Stock-JAR Java8, six Java contracts and ten
+Python tests pass. Final deployment8a866bb7 on232 reports actual AutoAspect
+enabledReadback=true/activationRequired=true and also covers passive Library
+handling; Core/rootFFmpeg hashes unchanged. No Android runtime fix or
+OSD-bug closure follows from this commissioning correction. Android ONN-003
+owns the physical results and exact remaining reproduction gap.
+
+## Bounded AutoAspect commissioning (2026-10-15)
+
+ONN-003 required the official Automatic Aspect Ratio STVI on `.232` without
+manual plugin-manager navigation. The bridge now permits only `AutoAspect` and
+`nielm_autoaspect`; availability and install use stock plugin APIs, exact
+numeric version, compatibility, known UI context and explicit confirmation.
+No caller URL/path/class/API/arbitrary plugin ID is accepted. STVIs use stock
+enable then current-STV reload. The original global false `IsPluginEnabled`
+readback was incorrectly described as an STVI limitation; the correction above
+uses the UI-scoped API and requires true. Earlier physical import logs remain
+valid evidence of those particular imports.
+
+Java8 compile, focused commissioner tests, all existing Java suites and ten
+Python tests pass. Official AutoAspect1.3.4/dependency1.3.1 source packages,
+registered as exact local development versions1.3.4.2.2610152051 and
+1.3.1.1.2610152023, installed on `.232`; the server log records the exact STVI
+import and active aspect-setting calls.
+Post-test activity is0 recordings/contexts/clients. Sage.jar stayed
+`7d9a60b6...4259`, root FFmpeg `bdf6aabf...862f6`, and the installed bridge is
+`d213ced5...d8426`. This is a compatibility test control, not a production
+playback dependency or a general plugin installer.
+
+## Stock175 diagnostics control qualification (2026-10-10)
+
+User-requested plugin-only update/restart after Pro stop/disconnect and verified
+0recordings/contexts/clients. MCPc1383fbf ->71befa1d, extension95557727->5a623266;
+stockCore/rootFFmpeg/transcoder unchanged, verified rollback and existing four
+options preserved. diagnostics.enabled false->true/capabilities->false passes
+stock175; same71 candidate previously verified false/true/false on stock185.
+MCP-DIAGNOSTICS-001 now closes its bounded controls (five stock-JAR Java/10Python
+contracts retained); no production-runtime MCP dependency or publication change.
+Report lives in companion results/VCE-011/175-diagnostic-update.json. Stock
+host-network health via configuredauthenticated bridge, no Dockerhealthcheck;
+new UI after startup does not invalidate pre-restart idle proof or authorize
+another restart. One-time175 authority consumed; original defaultOff restored.
+
+## 232 diagnostics bootstrap (2026-10-10)
+
+User explicitly confirmed no recordings/viewers and approved one plugin-only
+bootstrap despite old bridge's unknown recording status. Consumed once:
+6fff42f0 -> qualified diagnostic-control candidate71befa1d, health0.1.5,
+expected232 IP and post-upgrade public server.activity0recordings/contexts/
+clients verified. Core/rootFFmpeg/SageTVTranscoder hashes unchanged and rollback
+retained. Unknown pre-upgrade activity is not zero-recording proof. No175 restart
+or published0.1.5 artifact change. All subsequent restarts require activity guard.
+Compact artifacts/results/MCP-DIAGNOSTICS-001/232-bootstrap.json.
+
+## Unreleased diagnostic commissioning candidate (2026-10-10 UTC)
+
+VCE-011/012/Android DIAG-002 add only diagnostics.enabled to the existing
+confirmed Boolean companion allowlist; no arbitrary port/path/API control.
+Five stock-JAR Java contracts and10Python tests pass; candidate JAR71befa1d
+installed on stock Windows185, Core unchanged. Actual receiverfalse->true->false
+readback/restoration and client upload receipt pass. Publication remains0.1.5/
+c1383fbf; do not rewrite that immutable package for these new source edits.
+User now directs all further tests to232/non-Pro and forbids175 restart.
+232 old0.1.4 lacks recording/activity controls; exact recording preflight is
+needed before its authorized plugin-only update. No new release claimed.
+
 ## MCP-RELEASE-015 complete / catalog submission2026-10-09
 
 https://github.com/OpenSageTV/sagetv-plugin-repo/pull/128 is OPEN/MERGEABLE/CLEAN,

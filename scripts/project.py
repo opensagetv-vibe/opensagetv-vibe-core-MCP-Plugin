@@ -60,7 +60,7 @@ def source_epoch() -> int:
     value = os.environ.get("SOURCE_DATE_EPOCH", "").strip()
     if value:
         return int(value)
-    return 1789920000  # 2026-09-20T16:00:00Z, stable local pre-release epoch
+    return 1792108800  # 2026-10-16T00:00:00Z, stable 0.1.6 release epoch
 
 
 def zip_time(epoch: int) -> tuple[int, int, int, int, int, int]:
@@ -116,6 +116,8 @@ def test() -> None:
          "org.opensagetv.vibe.coremcp.ExactPathLookupTest"])
     run(["java", "-cp", os.pathsep.join((str(jar), str(CLASSES), str(TEST_CLASSES))),
          "org.opensagetv.vibe.coremcp.CompanionInstallerTest"])
+    run(["java", "-cp", os.pathsep.join((str(jar), str(CLASSES), str(TEST_CLASSES))),
+         "org.opensagetv.vibe.coremcp.PluginCommissionerTest"])
     suite = unittest.defaultTestLoader.discover(str(ROOT / "tests"), pattern="test_*.py")
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     if not result.wasSuccessful():
@@ -145,7 +147,7 @@ def validate() -> None:
 
     properties = release_properties()
     expected_properties = {
-        "VERSION": "0.1.5",
+        "VERSION": "0.1.6",
         "PACKAGE_ID": "opensagetv-vibe-core-MCP-Plugin",
         "REQUIRES_BUILD": "true",
         "PUBLISH_APPROVED": "true",
