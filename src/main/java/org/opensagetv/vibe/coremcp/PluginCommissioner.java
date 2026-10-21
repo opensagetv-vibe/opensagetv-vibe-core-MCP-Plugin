@@ -16,8 +16,9 @@ import java.util.Set;
  * context so SageTV owns the import and rollback metadata.</p>
  */
 final class PluginCommissioner {
+    static final String SAGEMC_ID = "opensagetv-vibe-sagemc";
     private static final Set<String> ALLOWED = Collections.unmodifiableSet(
-            new LinkedHashSet<String>(Arrays.asList("AutoAspect", "nielm_autoaspect")));
+            new LinkedHashSet<String>(Arrays.asList("AutoAspect", "nielm_autoaspect", SAGEMC_ID)));
     private final CompanionSettings.Api api;
 
     PluginCommissioner(CompanionSettings.Api api) { this.api = api; }
@@ -32,7 +33,15 @@ final class PluginCommissioner {
             Metadata metadata = metadata(id, plugin);
             out.put("availableVersion", metadata.version);
             out.put("pluginType", metadata.type);
-            out.put("compatible", strictBoolean(api.global("IsPluginCompatible", plugin), "compatibility"));
+            Boolean compatible = strictBoolean(api.global("IsPluginCompatible", plugin), "compatibility");
+            out.put("compatible", compatible);
+            if (!compatible.booleanValue())
+                out.put("incompatibilityReason", String.valueOf(api.global("GetPluginIncompatabilityReason", plugin)));
+        }
+        if (SAGEMC_ID.equals(id)) {
+            Object current = findInstalled(id);
+            out.put("installed", Boolean.valueOf(current != null));
+            if (current != null) out.put("installedVersion", metadata(id, current).version);
         }
         return out;
     }
@@ -41,6 +50,10 @@ final class PluginCommissioner {
             String expectedVersion, boolean confirm) {
         requireAllowed(id);
         if (!confirm) throw new IllegalArgumentException("Plugin commissioning requires confirm=true");
+        // A full STV is installed globally, not imported/enabled into an
+        // arbitrary current UI. The fixed ID/type and independently idle
+        // server boundary are mandatory; no caller-supplied paths or APIs.
+        if (SAGEMC_ID.equals(id)) return installSageMc(expectedVersion);
         requireContext(context);
         Object plugin = api.global("GetAvailablePluginForID", id);
         if (plugin == null) throw new IllegalStateException("Reviewed plugin is absent from available repository");
@@ -105,6 +118,12 @@ final class PluginCommissioner {
     }
 
     private Object installed(String id) {
+        Object found = findInstalled(id);
+        if (found == null) throw new IllegalStateException("Installed plugin metadata is unavailable");
+        return found;
+    }
+
+    private Object findInstalled(String id) {
         Object values = api.global("GetInstalledPlugins"), found = null;
         if (!(values instanceof Object[])) throw new IllegalStateException("Installed plugin status unavailable");
         for (Object value : (Object[]) values) {
@@ -112,8 +131,39 @@ final class PluginCommissioner {
             if (found != null) throw new IllegalStateException("Ambiguous installed plugin: " + id);
             found = value;
         }
-        if (found == null) throw new IllegalStateException("Installed plugin metadata is unavailable");
         return found;
+    }
+
+    private Map<String, Object> installSageMc(String expectedVersion) {
+        Object candidate = api.global("GetAvailablePluginForID", SAGEMC_ID);
+        if (candidate == null) throw new IllegalStateException("SageMC development catalog is absent");
+        Metadata checkpoint = metadata(SAGEMC_ID, candidate);
+        if (!checkpoint.version.equals(expectedVersion))
+            throw new IllegalStateException("Available SageMC version changed since checkpoint");
+        if (!strictBoolean(api.global("IsPluginCompatible", candidate), "compatibility").booleanValue())
+            throw new IllegalStateException("SageMC is incompatible with this server");
+        for (String name : new String[]{"GetCurrentlyRecordingMediaFiles", "GetUIContextNames", "GetConnectedClients"}) {
+            Object values = api.global(name);
+            if (!(values instanceof Object[]) || ((Object[]) values).length != 0)
+                throw new IllegalStateException("SageMC installation requires independently idle recording/client status");
+        }
+        Object result = api.global("InstallPlugin", candidate);
+        if (!("OK".equals(result) || "RESTART".equals(result)))
+            throw new IllegalStateException("SageMC installation failed: " + String.valueOf(result));
+        Metadata current = metadata(SAGEMC_ID, installed(SAGEMC_ID));
+        if (!expectedVersion.equals(current.version))
+            throw new IllegalStateException("Installed SageMC version differs from checkpoint");
+        Map<String, Object> out = identity(SAGEMC_ID);
+        out.put("installedVersion", current.version);
+        out.put("pluginType", current.type);
+        out.put("installResult", result);
+        out.put("restartRequired", Boolean.valueOf("RESTART".equals(result)));
+        out.put("restarted", Boolean.FALSE);
+        out.put("uiReloaded", Boolean.FALSE);
+        out.put("activationRequired", Boolean.TRUE);
+        // Full STV selection is deliberately left to the user's UI setup.
+        // Passive STVs must never be falsely reported as enabled Standard/STVI.
+        return out;
     }
 
     private void requireContext(String context) {
@@ -128,7 +178,8 @@ final class PluginCommissioner {
         String actualId = String.valueOf(api.global("GetPluginIdentifier", plugin));
         if (!expectedId.equalsIgnoreCase(actualId)) throw new IllegalStateException("Unexpected plugin identity");
         String type = String.valueOf(api.global("GetPluginType", plugin));
-        if (!("STVI".equals(type) || "Library".equals(type)))
+        if (SAGEMC_ID.equals(expectedId) ? !"STV".equals(type)
+                : !("STVI".equals(type) || "Library".equals(type)))
             throw new IllegalStateException("Unexpected plugin type: " + type);
         String version = String.valueOf(api.global("GetPluginVersion", plugin));
         if (!version.matches("[0-9]+(?:\\.[0-9]+)+"))

@@ -7,6 +7,7 @@
 
 This file records only the current project state.
 
+
 - [ ] **MCP-TIMESCROLL-001 - Independent Time Scroll bridge command gate.**
   Retained from the0.1.4 publication task's deployment acceptance: include the
   allowlist in the next safe stock-server bridge gate. Java8/contracts and
@@ -15,6 +16,16 @@ This file records only the current project state.
   skip/commit/cancel and do not infer a new production MiniClient event.
 
 ## Checklist change ledger
+
+- [x] **SAGEMC-PLUGIN-001 dependency (2026-10-21):** Reviewed commissioner
+  permits only fixed opensagetv-vibe-sagemc/STV, exact version/confirmation and
+  independently idle recording/UI/client arrays for global stock InstallPlugin.
+  No arbitrary API/path, UI rebinding, passive enable or implicit restart;
+  installed readback and public incompatibility reason are explicit. Stock-JAR
+  Java8/six Java/ten Python and actual isolated stock STV install/repeated-refresh
+  guards pass. Development candidate a0072243... deployed only232; actual0.1.0
+  install/guarded restart/2648-file readback pass, Core7d9a60b6 unchanged.
+  No new release/tag/catalog submission or normal SageMC runtime dependency.
 
 - 2026-10-16 post-publication catalog check:PR129 is MERGED at3f910892;
   generated regular/Beta feeds still have no MCP entry. No pending review,

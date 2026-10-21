@@ -1,5 +1,13 @@
 # OpenSageTV Vibe Core MCP Plugin
 
+Unreleased development commissioning also permits the fixed
+`opensagetv-vibe-sagemc` **STV** through `plugin.commission_available/install`.
+Installation requires independently idle recordings/UI/clients, explicit
+confirmation and the exact discovered numeric version. It accepts no alternate
+URL/path/API, does not rebind a UI or enable a passive STV, and reports required
+restarts without executing them. Availability returns stock incompatibility
+details. This control is commissioning-only, not a normal SageMC dependency.
+
 Release line **0.1.6** adds the bounded diagnostic-receiver control and
 reviewed AutoAspect commissioning, including selected-UI STVI enable/readback.
 Stock-JAR Java8 and focused Java/Python contracts pass. Diagnostic controls

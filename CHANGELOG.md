@@ -1,5 +1,9 @@
 # Changelog
 
+- Unreleased2026-10-21 SAGEMC-PLUGIN-001: bounded fixed STV commissioning,
+  installed readback and stock incompatibility diagnostics. Stock-JAR contracts,
+  isolated stock fixture and232 full dev install pass. No new public release.
+
 ## Unreleased
 
 ## 0.1.6 - 2026-10-16

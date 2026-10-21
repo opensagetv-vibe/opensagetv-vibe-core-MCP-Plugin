@@ -93,7 +93,9 @@ final class ControlService {
                     bool(request, "refresh", false));
         }
         else if ("plugin.commission_install".equals(action)) {
-            result = pluginCommissioner.install(context(request), required(request, "plugin_id"),
+            String id = required(request, "plugin_id");
+            result = pluginCommissioner.install(PluginCommissioner.SAGEMC_ID.equals(id)
+                            ? "" : context(request), id,
                     required(request, "expected_version"), bool(request, "confirm", false));
         }
         else if ("companion.config_get".equals(action) || "companion.config_set".equals(action)) {

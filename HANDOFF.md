@@ -1,5 +1,18 @@
 # Handoff
 
+## SageMC development commissioning (2026-10-21)
+
+SAGEMC-PLUGIN-001 adds fixed opensagetv-vibe-sagemc/STV to the reviewed
+commissioner. It uses global stock installation only after independently idle
+recordings/UI/clients, exact metadata/version and confirmation. It never enables
+passive STVs, switches a UI or restarts SageTV. Availability includes installed
+version and stock incompatibility reason, not an arbitrary API proxy.
+Java8/JDK11 against unchanged stock Jar, six Java/ten Python and an actual
+isolated stock plugin-manager fixture pass;232 full dev installation/readback
+passes with2648 files and unchanged Core. Development JAR a0072243... still
+reports0.1.6; it is not a rebuilt public release. No tag/assets/catalog changes.
+Ordinary SageMC use does not depend on MCP. Parent SageMC task owns UI/licensing.
+
 ## MCP-RELEASE-016 published / catalog submitted (2026-10-16)
 
 Follow-up:PR129 is MERGED at3f910892a749d6079cf45cc2168f3f064c11c52f;
