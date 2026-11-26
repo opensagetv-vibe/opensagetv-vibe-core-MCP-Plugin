@@ -1,5 +1,61 @@
 # OpenSageTV Vibe Core MCP Plugin
 
+Development0.1.23 adds `sage_adaptive_bitrate_test`: inspect the shared MIM
+controller's opaque session handles, override one adjusted session's bitrate,
+or clear its override. Writes require confirmation and the current revision.
+The provider enforces its startup min/max, eligibility and finite handoff
+budget. A 15..300-second lease holds automatic adaptation, then clears itself.
+The result distinguishes requested override from the subsequently observed
+encoder target; it is not measured bitrate or a playback PASS. No INI change,
+arbitrary process/API/setting or normal-playback MCP dependency is introduced.
+
+Test sequence: start Fixed (Adjusted), inspect status, match the owned client's
+`testSessionId`, then call `sage_adaptive_bitrate_test("override", session_id,
+expected_revision, target_kbps, lease_seconds=120, confirm=True, server="test")`.
+Read status again before changing/clearing it. `operation="clear"` with the
+fresh revision resumes automatic policy; it does not force a return to Maximum.
+Ordinary Fixed and non-transcoded sources do not expose an adjusted controller.
+
+Development0.1.21 adds manual authenticated `diagnostics.threads` /
+`sage_diagnostics_threads(server="")`: one public-JDK snapshot, bounded to128
+threads/24frames and192-character strings, with opaque hex identities redacted.
+No shell, thread suspension, arbitrary selector, Core reflection or player/UI
+clock query. This test diagnostic never becomes a playback dependency.
+
+Unreleased0.1.20 adds read-only `companion.dvd_bookmark` / MCP
+`sage_companion_dvd_bookmark(context,server)`: exact connected12-hex UI,
+presence/SHA-256 fingerprint and bounded numeric title/time, never a disc path.
+It accepts no property/value and cannot write or restore bookmarks. This lets
+commissioning refuse pre-existing user data before save/resume/clear testing.
+Normal playback remains independent of MCP. MCP-DVD-BOOKMARK-001 now qualifies
+7Java/12Python/stock-JAR/package and actual manager20/Linux absence/save/clear
+readback with exact original-state restoration; not a published update.
+
+Unreleased0.1.19 corrects existing allowlisted command labels to the stock
+SageCommand internal names; the Time Scroll cursor/commit/cancel gate now
+passes on stock232/Non-Pro. Every mapping is checked against stock UserEvent.
+Development0.1.18 adds only the fixed dvd.client_controls Boolean with existing
+confirmation/CAS/readback. These are test controls, not playback dependencies.
+Shared device restoration is complete (TASKS/HANDOFF); Windows deferred.
+
+Unreleased0.1.17 adds direct bounded bridge actions `companion.dvd_intent`
+(exact connected context; operation save_resume/resume/beginning/clear_resume;
+confirm=true), `companion.metadata_get` (exact imported ID/descriptive field)
+and `companion.metadata_review` (same ID/field plus expected/value; false
+confirmation is read-only Preview, true is explicit reviewed Apply). These
+use the installed companion's public plugin configuration, not Core internals.
+The fixed `video.state_bridge` Boolean retains expected/confirmation/readback.
+No arbitrary config/API/path is accepted. Stock232 physical qualification and
+restoration are recorded in MCP-STOCK-MITIGATION-001; Windows deferred.
+Normal playback, bookmarks and state publication do not require this MCP plugin.
+
+Development0.1.7 additionally allows companion Boolean `video.restart_fix`
+and `companion.ts_hook` for only the fixed selected-UI TS adapter. Confirmation,
+expected-value/readback, exact connected context and installed option guards
+apply as for the DVD hook; old companions reject unsupported options. This is
+commissioning control, not a runtime playback dependency. Not yet physically
+qualified/published;0.1.6 remains the public release.
+
 Unreleased development commissioning also permits the fixed
 `opensagetv-vibe-sagemc` **STV** through `plugin.commission_available/install`.
 Installation requires independently idle recordings/UI/clients, explicit

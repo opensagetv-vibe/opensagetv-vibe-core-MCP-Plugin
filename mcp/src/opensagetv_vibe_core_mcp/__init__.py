@@ -1,3 +1,3 @@
 """OpenSageTV Vibe Core MCP adapter."""
 
-__version__ = "0.1.6"
+__version__ = "0.1.23"

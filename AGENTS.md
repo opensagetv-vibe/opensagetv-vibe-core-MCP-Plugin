@@ -1,5 +1,13 @@
 # Agent instructions
 
+## Superseding stock-server rule
+
+`.232` now runs official stock Core, just like protected `.175`/`.185`.
+Older non-stock exceptions below no longer apply: never replace Sage.jar,
+bundled Core natives or stock FFmpeg. Use client fixes, supported plugins or
+container OS/launcher integration. MCP controls stay bounded commissioning,
+not a normal playback dependency. Keep existing restart/activity guards.
+
 ## Task fix and server-boundary policy
 
 Apply this policy to every task workflow, including dependency fixes across

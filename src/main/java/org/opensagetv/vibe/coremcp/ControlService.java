@@ -25,15 +25,16 @@ final class ControlService {
                     "Up", "Down", "Left", "Right", "Select",
                     "DVD Menu", "DVD Title Menu", "DVD Return",
                     "DVD Next Chapter", "DVD Prev Chapter",
-                    "DVD Audio Change", "DVD Subtitle Change", "DVD Subtitle Toggle")));
+                    "DVD Audio Change", "DVD Subtitle Change", "DVD Subtitle Toggle", "DVD Angle Change")));
     private static final List<String> ACTIONS = Collections.unmodifiableList(Arrays.asList(
             "capabilities", "server.activity", "ui.list", "ui.state", "ui.command",
             "media.resolve_exact_path", "media.watch", "media.seek", "media.control",
             "media.clear_watched", "channel.tune", "captions.get", "captions.set", "captions.trace",
-            "library.add_import_path", "library.remove_import_path", "library.scan", "diagnostics.snapshot",
-            "plugin.config_get", "plugin.config_set",
-            "plugin.commission_available", "plugin.commission_install",
-            "companion.config_get", "companion.config_set", "companion.dvd_hook",
+            "library.add_import_path", "library.remove_import_path", "library.scan", "diagnostics.snapshot", "diagnostics.threads",
+            "plugin.config_get", "plugin.config_set", "plugin.lifecycle", "plugin.dvd_fail_process",
+            "plugin.commission_available", "plugin.commission_install", "plugin.bitrate_test", "plugin.adaptive_test",
+            "companion.config_get", "companion.config_set", "companion.dvd_hook", "companion.ts_hook",
+            "companion.dvd_intent", "companion.dvd_bookmark", "companion.metadata_review", "companion.metadata_get",
             "companion.available", "companion.status", "companion.install"));
     private final PluginCaptionSettings pluginCaptionSettings=new PluginCaptionSettings(
             (name,arguments) -> api(name,arguments));
@@ -57,6 +58,10 @@ final class ControlService {
         }
     });
     private volatile long mediaPathIndexTime;
+    private final PluginLifecycle pluginLifecycle = new PluginLifecycle(new CompanionSettings.Api() {
+        public Object global(String name, Object... arguments) { return api(name, arguments); }
+        public Object ui(String context, String name, Object... arguments) { return apiUI(context, name, arguments); }
+    });
 
     Map<String, Object> execute(Map<String, String> request) {
         String action = required(request, "action");
@@ -64,6 +69,7 @@ final class ControlService {
         Map<String, Object> result;
         if ("capabilities".equals(action)) result = capabilities();
         else if ("server.activity".equals(action)) result = serverActivity();
+        else if ("diagnostics.threads".equals(action)) result = JvmThreadSnapshot.capture();
         else if ("ui.list".equals(action)) result = uiList();
         else if ("ui.state".equals(action)) result = uiState(context(request));
         else if ("ui.command".equals(action)) result = uiCommand(context(request), required(request, "command"));
@@ -79,6 +85,15 @@ final class ControlService {
         else if ("library.add_import_path".equals(action)) result = libraryAddImportPath(request);
         else if ("library.remove_import_path".equals(action)) result = libraryRemoveImportPath(request);
         else if ("library.scan".equals(action)) result = libraryScan(bool(request, "wait_until_done", false));
+        else if("plugin.adaptive_test".equals(action)){
+            result=map();result.put("sessions",pluginCaptionSettings.adaptiveTest(required(request,"plugin_id"),
+                required(request,"operation"),request.get("session_id"),request.get("expected_revision"),
+                request.get("target_kbps"),request.get("lease_seconds"),bool(request,"confirm",false)));
+        }
+        else if("plugin.bitrate_test".equals(action)){
+            result=map();result.put("status",pluginCaptionSettings.bitrateTest(
+                required(request,"plugin_id"),bool(request,"start",false),bool(request,"confirm",false)));
+        }
         else if ("plugin.config_get".equals(action) || "plugin.config_set".equals(action)) {
             result=map();
             String plugin=required(request,"plugin_id"), setting=required(request,"setting");
@@ -87,6 +102,17 @@ final class ControlService {
                     : pluginCaptionSettings.set(plugin,setting,required(request,"expected"),
                             required(request,"value"),bool(request,"confirm",false));
             result.put("pluginId",plugin); result.put("setting",setting); result.put("value",value);
+        }
+        else if ("plugin.lifecycle".equals(action)) {
+            if (!request.containsKey("expected") || !request.containsKey("enabled"))
+                throw new IllegalArgumentException("Boolean lifecycle checkpoint required");
+            result = pluginLifecycle.lifecycle(context(request), required(request,"plugin_id"),
+                    CompanionSettings.enabledValue(required(request,"expected")),
+                    CompanionSettings.enabledValue(required(request,"enabled")), bool(request,"confirm",false));
+        }
+        else if ("plugin.dvd_fail_process".equals(action)) {
+            result = pluginLifecycle.failDvdProcess(context(request), required(request,"plugin_id"),
+                    required(request,"expected_session"), bool(request,"confirm",false));
         }
         else if ("plugin.commission_available".equals(action)) {
             result = pluginCommissioner.available(required(request, "plugin_id"),
@@ -98,6 +124,21 @@ final class ControlService {
                             ? "" : context(request), id,
                     required(request, "expected_version"), bool(request, "confirm", false));
         }
+        else if ("companion.dvd_bookmark".equals(action)) result=companionSettings.dvdBookmark(context(request));
+        else if ("companion.dvd_intent".equals(action)) {
+            result=map();result.put("status",companionSettings.dvdIntent(context(request),
+                    required(request,"operation"),bool(request,"confirm",false)));
+        }
+        else if ("companion.metadata_get".equals(action)) {
+            result=map();String field=required(request,"field");
+            result.put("field",field);result.put("value",companionSettings.metadataGet(
+                    Integer.parseInt(required(request,"media_id")),field));
+        }
+        else if ("companion.metadata_review".equals(action)) {
+            result=map();result.put("status",companionSettings.metadataReview(
+                    Integer.parseInt(required(request,"media_id")),required(request,"field"),
+                    request.get("expected"),request.get("value"),bool(request,"confirm",false)));
+        }
         else if ("companion.config_get".equals(action) || "companion.config_set".equals(action)) {
             result = map();
             String key = required(request, "setting");
@@ -106,11 +147,14 @@ final class ControlService {
                             required(request, "value"), bool(request, "confirm", false));
             result.put("setting", key); result.put("value", value);
         }
-        else if ("companion.dvd_hook".equals(action)) {
+        else if ("companion.dvd_hook".equals(action) || "companion.ts_hook".equals(action)) {
             Boolean enabled = request.containsKey("enabled")
                     ? CompanionSettings.enabledValue(request.get("enabled")) : null;
-            result = companionSettings.hook(context(request), request.get("expected"),
-                    enabled, bool(request, "confirm", false));
+            result = "companion.ts_hook".equals(action)
+                    ? companionSettings.tsHook(context(request), request.get("expected"),
+                            enabled, bool(request, "confirm", false))
+                    : companionSettings.hook(context(request), request.get("expected"),
+                            enabled, bool(request, "confirm", false));
         }
         else if ("companion.available".equals(action)) {
             result = companionInstaller.available(bool(request, "refresh", false));
@@ -179,6 +223,14 @@ final class ControlService {
         out.put("loading", boolObject(apiUI(context, "IsMediaPlayerLoading")));
         out.put("dvd", boolObject(apiUI(context, "IsCurrentMediaFileDVD")));
         out.put("dvdMenu", safeBoolean(context, "IsShowingDVDMenu"));
+        if (Boolean.TRUE.equals(out.get("dvd"))) {
+            // Public read-only evidence; zero remains unknown, never a passed
+            // angle switch. No private VM access or normal playback dependency.
+            out.put("dvdTitle", safeNumber(context, "GetDVDCurrentTitle"));
+            out.put("dvdChapter", safeNumber(context, "GetDVDCurrentChapter"));
+            out.put("dvdAngle", safeNumber(context, "GetDVDCurrentAngle"));
+            out.put("dvdAngleCount", safeNumber(context, "GetDVDNumberOfAngles"));
+        }
         Object media = apiUI(context, "GetCurrentMediaFile");
         if (media != null) out.put("media", mediaInfo(media));
         out.put("mediaTimeMs", number(apiUI(context, "GetMediaTime")));
@@ -205,11 +257,12 @@ final class ControlService {
                     Integer.valueOf((int) dvdControl[0]),
                     Long.valueOf(dvdControl[1]), Long.valueOf(dvdControl[2])});
         } else {
-            apiUI(context, "SageCommand", new Object[]{command});
+            apiUI(context, "SageCommand", new Object[]{canonicalCommand(command)});
         }
         Map<String, Object> out = map();
         out.put("context", context);
         out.put("command", command);
+        if (dvdControl==null) out.put("dispatchedCommand",canonicalCommand(command));
         out.put("accepted", Boolean.TRUE);
         return out;
     }
@@ -223,6 +276,7 @@ final class ControlService {
         if ("DVD Subtitle Change".equals(command)) return new long[]{214, -1, -1};
         if ("DVD Subtitle Toggle".equals(command)) return new long[]{215, 0, 0};
         if ("DVD Audio Change".equals(command)) return new long[]{216, -1, -1};
+        if ("DVD Angle Change".equals(command)) return new long[]{213, -1, -1};
         if (!showingMenu) return null;
         if ("Select".equals(command)) return new long[]{208, 0, 0};
         if ("Up".equals(command)) return new long[]{210, 1, 0};
@@ -230,6 +284,20 @@ final class ControlService {
         if ("Down".equals(command)) return new long[]{210, 3, 0};
         if ("Left".equals(command)) return new long[]{210, 4, 0};
         return null;
+    }
+
+    /** Friendly bridge labels are not all valid SageCommand names. Use the
+     * stock stable internal names, which also survive UI language changes.
+     * This mapping never admits a command outside the existing allowlist. */
+    static String canonicalCommand(String command) {
+        if (!COMMANDS.contains(command)) throw new IllegalArgumentException("Command not allowlisted");
+        if ("Skip Fwd".equals(command)) return "ff";
+        if ("Skip Bkwd".equals(command)) return "rew";
+        if ("Channel Up".equals(command)) return "ch_up";
+        if ("Channel Down".equals(command)) return "ch_down";
+        if ("DVD Next Chapter".equals(command)) return "dvd_chapter_up";
+        if ("DVD Prev Chapter".equals(command)) return "dvd_chapter_down";
+        return command.toLowerCase(java.util.Locale.ROOT).replace(' ','_');
     }
 
     private Map<String, Object> watch(Map<String, String> request) {

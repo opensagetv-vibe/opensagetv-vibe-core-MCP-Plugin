@@ -1,5 +1,105 @@
 # Changelog
 
+## 0.1.23 release preparation - 2026-11-26
+
+- Explicit user approval for the qualified bounded diagnostic/thread/plugin
+  controls and exact-session adaptive-bitrate test tools below.
+- Stock-JAR Java8, seven Java, fifteen Python, source and packaging checks pass;
+  no stock Core replacement or normal-playback MCP dependency.
+
+## 0.1.23 — development, unpublished
+
+- Add fixed authenticated adaptive session status/override/clear through the
+  FFmpeg plugin's public configuration API, with confirmation and revision
+  checks. Provider enforces session limits, readiness, lease and replacement
+  budget; no arbitrary settings, processes or normal-playback dependency.
+
+## Unreleased0.1.21
+
+- Add bounded manual public-JDK thread observation for native UI/seek diagnosis,
+  without Core modification, shell, suspension or a playback dependency.
+
+## Unreleased0.1.20
+
+- Add a fixed read-only connected-UI DVD bookmark checkpoint for safe
+  commissioning; return presence/digest/numeric title/time, never disc path.
+  No arbitrary property key/value, writes, Core change or playback dependency.
+
+## Unreleased0.1.19
+
+- Fix friendly MCP command labels that stock SageCommand silently ignores:
+  Skip Fwd/Bkwd and Channel Up/Down now use stable ff/rew/ch_up/ch_down names.
+  Normalize the other already allowlisted names without widening controls;
+  validate every mapping against the actual stock UserEvent binary.
+- Stock232/Non-Pro cursor/commit/cancel and independent HDMI picture pass;
+  seven Java/eleven Python checks pass. Fixed option readback/restoration passes;
+  shared device preference/awake/bookmark restoration completes in revision465
+  after ADB recovers. Windows deferred; no publication or production-key/Core changes.
+
+## Unreleased0.1.18
+
+- Add only dvd.client_controls Boolean commissioning with existing explicit
+  confirmation, expected-value comparison, supported-setting and readback guards.
+  Production Android DVD controls do not use MCP.
+
+## Unreleased0.1.17
+
+- Add fixed companion state-publication Boolean and explicit exact-UI owned
+  DVD save/resume/beginning/clear commissioning, without changing selected UI.
+- Add bounded imported descriptive inspection and reviewed edit with explicit
+  confirmation/expected value and original config restoration. No arbitrary
+  field, format/database, API, class, URL or path controls.
+- Actual stock232/Non-Pro gates and exact settings/metadata restoration pass;
+  stock-JAR7Java/11Python/packaging pass. Production playback never needs MCP.
+  Windows remains deferred; no publication or Core mutation.
+
+## Unreleased0.1.14
+
+- Complete bounded Linux TS/caption/preview commissioning on stock232 with
+  exact restoration. Manager-loaded0.1.14,7Java/11Python/package/validate and
+  affected Non-Pro physical rows pass; no private Core or normal MCP dependency.
+
+- Add only the fixed companion dvd.skip_previews Boolean to confirmation/CAS/
+  readback commissioning. Missing older options remain explicit errors;
+  production DVD playback never depends on the test bridge.
+
+## Unreleased0.1.13
+
+- Commission only the optional caption-bridge Boolean with confirmation/CAS/
+  readback and unknown-option refusal. Public-API audit removed experimental
+  caption player hooks before qualification; no player override or arbitrary
+  API/property/class proxy. Physical stock232 commissioning is recorded in
+  the completed0.1.14/VCE-016 qualification; Windows stays deferred.
+
+## Unreleased0.1.11
+
+- Add bounded public DVD Angle Change213 and exact stock title/chapter/angle/
+  count readbacks. Real three-branch picture selection verifies the control on
+  stock232; no private Core access or normal-playback dependency.
+
+## Unreleased0.1.10
+
+- Add fixed Extension/FFmpeg Standard lifecycle controls with confirmation,
+  expected state/readback and exact one-UI/no-recordings isolation.
+- Add exact active DVD-provider child-failure commissioning through supported
+  plugin configuration API; no arbitrary plugins, PIDs, shell or filesystem.
+- Seven Java/ten Python tests pass; stock232 actual provider Disable and real
+  full-GPU child failure controls exercised. Normal playback never needs MCP.
+
+## Unreleased0.1.8
+
+- Add bounded owned-DVD option/mode and fixed-hook commissioning on stock Core.
+  Six Java/ten Python checks and actual232 CAS/readback/restoration pass.
+  MCP remains test-only; parent DVD/Windows runtime acceptance stays open.
+
+## Unreleased0.1.7
+
+- Bound TS restart companion commissioning to one new Boolean and the fixed
+  per-UI TS adapter class/property. Preserve explicit confirmation, expected
+  values, feature/option support, other clients and stock APIs.
+- Extend stock-JAR tests for denied/disabled/missing/stale/other-UI cases.
+  Physical stock-server gate is pending; no new release or Core modification.
+
 - Unreleased2026-10-21 SAGEMC-PLUGIN-001: bounded fixed STV commissioning,
   installed readback and stock incompatibility diagnostics. Stock-JAR contracts,
   isolated stock fixture and232 full dev install pass. No new public release.

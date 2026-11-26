@@ -1,5 +1,15 @@
 # Tasks
 
+
+
+MCP-DVD-MENU-001 and MCP-TIMESCROLL-001 COMPLETE2026-11-10 on stock232/Non-Pro.
+Actual manager0.1.19, stock-JAR7Java/11Python PASS. Shared Android restoration
+also COMPLETE in VCE-022/STOCKDVD-003 at revision465, final0activity/hashes.
+
+MCP-STOCK-MITIGATION-001 COMPLETE2026-11-10 on stock232, real manager0.1.17.
+Windows deferred; no normal playback dependency. See ledger and Extension
+artifacts/results/VCE-018/019/020/RESULT.md for exact gates/restoration.
+
 > **Pre-commit task maintenance:** Immediately before every repository commit, move
 > completed `[x]` items out of active sections and into
 > `## Checklist change ledger`. Preserve IDs, evidence, and context; never
@@ -7,15 +17,141 @@
 
 This file records only the current project state.
 
+Current2026-11-10: MCP0.1.14 manager-loaded on stock232. VCE-015/016/017
+commissioning children complete; exact hooks/options/power restored,0activity/
+protected hashes. Windows deferred, no production MCP dependency/publication.
 
-- [ ] **MCP-TIMESCROLL-001 - Independent Time Scroll bridge command gate.**
-  Retained from the0.1.4 publication task's deployment acceptance: include the
-  allowlist in the next safe stock-server bridge gate. Java8/contracts and
-  installed allowlist pass, but caption-listener proof does not substitute
-  for the independent physical command. Preserve settings/stateful enter/
-  skip/commit/cancel and do not infer a new production MiniClient event.
+
+MCP-ADAPT-TEST-001 control qualification is recorded in the ledger. Parent
+ADAPT-001 and consumer automatic-pressure gates remain in their own projects.
 
 ## Checklist change ledger
+
+- [x] **PUBLISH-001 MCP preparation (2026-11-26).** User authorizes0.1.23
+  beta publication. Enable its explicit approval marker; stock-JAR Java8
+  build/seven Java/fifteen Python/source/package checks pass. Package remains
+  c2f89e0a MD5, matching the qualified implementation. Normal playback never
+  requires MCP. Serial repository CI/public asset verification precede catalog.
+
+- [x] **MCP-ADAPT-TEST-001 (parent FFmpeg ADAPT-001;2026-11-25).** Fixed
+  authenticated status/override/clear through public FFmpeg config only. Exact
+  session/revision, confirmation, startup range,15..300s lease and existing
+  rate/frame-ACK/budget guards; no global bitrate/INI/process/Core changes.
+  Stock-JAR Java8/seven Java/fifteen Python/source/package pass; actual manager23
+  on stock232/20protected hashes. Actual WebKit QSV same-encoder2000/2500 targets
+  measure2012.592/2494.724kbps; Chromium independently measures both targets,
+  with focused transport/cleanup harness checks separately recorded. Non-Pro
+  AFTMM/Media3 VAAPI handoff2000/2500/presented/clear and139prefs/power/zero owned
+  sessions/idle restoration pass. Accepted/observed/measured are distinct.
+  Immediate MCP self-update restart activity UNKNOWN under standing232 bootstrap
+  exception, not idle proof. No normal playback MCP dependency, publication,
+  physical-phone/WAN or all-platform claim. Compact results/MCP-ADAPT-TEST-001.
+
+- [x] **MCP-RATE-TEST-001 (parent FFmpeg RATE-TEST-001; 2026-11-24).**
+  Fixed authenticated plugin.bitrate_test / sage_bitrate_test invoke only the
+  installed provider's public settings action/status; confirmation required.
+  Seven Java/fourteen Python allowlist/confirmation/refusal tests and stock-JAR
+  build/package pass. Normal manager installed 0.1.22 on stock232; actual start
+  at1795485523825 and readback report PASS after67.548s, while a later active
+  playback invocation is refused. No arbitrary settings/classes/commands/paths
+  and no playback dependency. Detailed measured output and scope:
+  `../opensagetv-vibe-FFmpeg-Plugin/artifacts/results/RATE-TEST-001/RESULT.md`.
+
+- [x] **MCP-THREADS-001 (parent WEB-049;2026-11-16).** Java8/stock-JAR seven
+  Java/thirteen Python tests, source/build/package pass. Normal manager loads
+  0.1.21 on unchanged stock232; runtime health21 and exact JAR e7b47855af0f24cf
+  verified. Idle snapshot59threads and during-phone snapshot83threads, neither
+  truncated; limits128threads/24frames/192characters, redaction/routing/failure
+  contracts pass. Actual EventRouter/UIManager wait and ActiveRender legacy
+  IMDb lookup identify owning SAGEMC-ART-001 follow-up. Before self-update idle
+  independently verified; pre-restart activity UNKNOWN because bridge stops
+  during its own upgrade, using standing232 bootstrap authority, not idle proof.
+  Post-restart actual0/0/0 activity, expectedIP/health and20protected hashes pass.
+  No Core change, normal playback dependency, publication or175/185 mutation.
+
+
+- [x] **MCP-DVD-BOOKMARK-001 (parent WEB-055;2026-11-15).** Candidate20 adds
+  only fixed connected-UI read-only presence/digest/numeric title/time; no disc
+  path, arbitrary property, writes or restoration proxy.7stock-JAR Java/
+ 12Python tests pass, normal manager20/JAR9ed434f7 loads on unchanged stock232.
+  Actual browser tests prove initial absence, saved title/time and clear back
+  to absence; borrowed options/hooks restore. Self-update restart pre-activity
+  explicitly UNKNOWN under standing232 bootstrap authority; post-guard0/0/0
+  and20stock hashes pass. Compact results/MCP-DVD-BOOKMARK-001/RESULT.md.
+  No production dependency, publication or Windows claim.
+
+- [x] **MCP-TIMESCROLL-001 (2026-11-10).** Former queue-only gate now physically
+  qualifies stock232/Non-Pro with manager19. Fix invalid friendly SageCommand
+  labels to stock internal ff/rew/ch_up/ch_down; real stock UserEvent tests
+  validate every existing allowlist mapping. Cursor holds122683ms, commit
+  reaches275343ms, Play cancellation ends278495ms without second150s jump.
+  HDMI burned278712ms/STV4:38 confirms actual post-commit picture. SevenJava/
+  elevenPython PASS. No production keys/Core change. Compact
+  artifacts/results/MCP-TIMESCROLL-001/RESULT.md supersedes old queue-only
+  observations; raw corrected evidence retires recoverably. Windows deferred.
+- [x] **MCP-DVD-MENU-001 (parent VCE-022/STOCKDVD-003; 2026-11-10).** Fixed
+  default-off dvd.client_controls Boolean only; real manager18/19 CAS/stale
+  refusal and originalfalse readback PASS. Nine server options restored with
+  fresh0activity/protected hashes/no child. No normal playback MCP dependency.
+  Shared136 Android prefs/awake/bookmark restoration subsequently completes in
+  VCE-022/STOCKDVD-003/revision465; no repeated command gate was needed.
+
+- [x] **MCP-STOCK-MITIGATION-001 (2026-11-10; VCE-018/019/020).** Fixed
+  video.state_bridge Boolean/CAS, exact connected-UI owned DVD save/resume/
+  beginning/clear and allowlisted imported descriptive metadata_get/review.
+  Preview does not write metadata; confirmed expected-value edit and stock
+  readback restore original generated fixture. No arbitrary config/API/path.
+  Actual manager17 stock232 Native/Copy/full_gpu intent, refusal/Disable and
+  metadata gates pass;7Java/11Python/validate/package pass. Original136prefs,
+  hooks/options/metadata/power restored,0activity/protected hashes/no child.
+  Self-update bootstrap activity correctly UNKNOWN, not idle proof. Windows
+  deferred; no175/Pro/Core/publication or normal runtime MCP requirement.
+
+- [x] **MCP-DVD-PREVIEW-001 (2026-11-10; VCE-017).** Only dvd.skip_previews
+  Boolean/CAS/readback added. Real manager0.1.14,7Java/11Python/package/validate,
+  actual option false/true/false and stock232 preview policy/fallback gates pass.
+  Original hook/options restored; no private Core or production dependency.
+
+- [x] **MCP-CAPTION-HOOK-001 (2026-11-10; VCE-016).** Stable ID retained, but
+  experimental caption player-hook controls removed after public API audit.
+  Only video.caption_bridge Boolean/CAS/readback; real manager13/14 and actual
+  CEA/Teletext/DVB/Disable/local fallback tests pass. No MiniPlayer/FastLoad
+  modification. Original false restored; production bridge does not use MCP.
+
+- [x] **MCP-COMPANION-TS-001 (2026-11-10; VCE-013/VCE-015).** Fixed TS Boolean
+  and exact one-UI known/blank-class CAS controls qualify on stock232. Stock/
+  enabled/Off/Standard Disable/restore near-zero seeks pass; other-UI/third-party/
+  missing-version guards and public-JAR tests pass. Original blank hook/false
+  option restored. Original175/Pro field reproduction remains the parent's
+  deferred confirmation, not evidence supplied by this Linux commissioning.
+
+- [x] **MCP-DVD-ANGLE-001 - Bounded angle evidence (2026-11-10; VCE-014).**
+  Actual manager0.1.11 on stock232,7Java/11Python/package/validate PASS.
+  Fixed public213 plus exact stock title/chapter/angle/count readbacks verify
+  real generated red/green/blue branches2->3->1, not enqueue/angle count alone.
+  Flattened RAYA/SOUL missing branches refuse safely. No private Core access
+  or production MCP dependency. Full evidence Extension results/VCE-014/RESULT.md;
+  exact original settings/power restored,0activity/protected hashes/no child.
+
+- [x] **MCP-DVD-LIFECYCLE-001 - Bounded Linux migration failure controls
+  (2026-11-10; parent VCE-003).** Real manager0.1.10/78bf1b3d on official stock232;
+  seven Java/ten Python tests pass. Exact isolated UI/fresh recording guard,
+  confirm/expected state and fixed Standard IDs; actual provider child session4
+  terminated via public plugin API only, no arbitrary PID/command/URL. Standard
+  Disable/re-enable and child-failure Native A/V/HDMI pass. Original Standard
+  states, hook/options/136prefs/power restored, final0recordings/UIs/clients,
+  stock protected hashes/no orphan PASS. Compact Extension VCE-003 report;
+  Windows DEFERRED, not a physical pass. Normal playback independent of MCP.
+
+- [x] **MCP-DVD-OWNED-001 - Bounded owned-DVD commissioning (2026-11-10;
+  parent VCE-003).** Installed0.1.8/aa15bc5d through actual stock232 manager;
+  six Java/ten Python stock-JAR tests pass. Exact UI444556303031 configuration,
+  native/copy/transcode CAS and fixed owned-hook selection/readback exercised.
+  Original blank hook, enabledfalse, owned_navigationfalse, skip_menusfalse,
+  modNative and tracefalse restored/read back; client136prefs/power restored,
+  final authoritative0recordings/UIs/clients. No arbitrary class/API boundary
+  or normal playback dependency. Parent DVD/Windows parity remains open;
+  this closes only the bounded commissioning control, not its runtime parent.
 
 - [x] **SAGEMC-PLUGIN-001 dependency (2026-10-21):** Reviewed commissioner
   permits only fixed opensagetv-vibe-sagemc/STV, exact version/confirmation and

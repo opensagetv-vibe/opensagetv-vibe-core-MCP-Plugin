@@ -43,6 +43,17 @@ class CompanionToolTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             tool(plugin_id="another-plugin")
 
+    def test_bookmark_checkpoint_is_fixed_read_only_and_selected_server(self):
+        caller=Mock(return_value={"present": False})
+        tool=self.tool("sage_companion_dvd_bookmark",caller)
+        self.assertEqual(tool("444556303031",server="stock"),{"present":False})
+        caller.assert_called_once_with("companion.dvd_bookmark","stock",context="444556303031")
+        caller.reset_mock()
+        for invalid in (None,1,"LocalUI","444556303031\n","../bookmark"):
+            with self.assertRaises(ValueError):tool(invalid)
+        with self.assertRaises(TypeError):tool("444556303031",value="overwrite")
+        caller.assert_not_called()
+
     def test_install_requires_literal_confirmation_and_numeric_version(self):
         caller = Mock()
         tool = self.tool("sage_companion_install", caller)

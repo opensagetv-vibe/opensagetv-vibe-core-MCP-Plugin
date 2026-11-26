@@ -24,6 +24,23 @@ public final class ContractTest {
 
         if (ControlService.CAPABILITY_VERSION != 1)
             throw new AssertionError("Unexpected capability version");
+        if(!ControlService.isActionAllowed("diagnostics.threads"))throw new AssertionError("Missing bounded thread observation");
+        Map<String,Object> threads=JvmThreadSnapshot.capture();
+        if(((java.util.List<?>)threads.get("threads")).size()>JvmThreadSnapshot.MAX_THREADS)
+            throw new AssertionError("Unbounded thread output");
+        if(!"worker-[id]".equals(JvmThreadSnapshot.text("worker-abcdef0123456789")))
+            throw new AssertionError("Opaque thread identity leaked");
+        if(JvmThreadSnapshot.text(new String(new char[500]).replace('\0','x')).length()!=JvmThreadSnapshot.MAX_TEXT)
+            throw new AssertionError("Unbounded thread text");
+        for (String command:Arrays.asList("TV","Back","Home","Options","Info","Full Screen On","Full Screen Off",
+                "Play","Pause","Stop","Time Scroll","Skip Fwd","Skip Bkwd","Channel Up","Channel Down",
+                "Up","Down","Left","Right","Select","DVD Menu","DVD Title Menu","DVD Return",
+                "DVD Next Chapter","DVD Prev Chapter","DVD Audio Change","DVD Subtitle Change","DVD Subtitle Toggle","DVD Angle Change")) {
+            if(sage.UserEvent.getEvtCodeForName(ControlService.canonicalCommand(command))<2)
+                throw new AssertionError("Not a real stock event: "+command);
+        }
+        if (sage.UserEvent.getEvtCodeForName("Skip Fwd")!=0 || !"ff".equals(ControlService.canonicalCommand("Skip Fwd")))
+            throw new AssertionError("Friendly alias regression must be proved against real stock binary");
         for (String command : Arrays.asList(
                 "Full Screen On", "Full Screen Off", "Time Scroll",
                 "DVD Menu", "DVD Title Menu", "DVD Return",
@@ -62,6 +79,7 @@ public final class ContractTest {
             throw new AssertionError("Watch must acknowledge ordinary playback without media-state polling");
         assertDvdControl("DVD Menu", false, 201, 2);
         assertDvdControl("DVD Return", false, 209, 0);
+        assertDvdControl("DVD Angle Change", false, 213, -1);
         assertDvdControl("Down", true, 210, 3);
         assertDvdControl("Select", true, 208, 0);
         if (ControlService.dvdControlForCommand("Down", false) != null)

@@ -1,5 +1,25 @@
 # Workflow
 
+For ADAPT-001 testing, read `sage_adaptive_bitrate_test(operation="status")`
+and match the exact opaque test handle to the owned client's buffer report.
+Override with its current revision, target within startup min/max, confirmation
+and a short 15..300s lease. Do not infer encoder application from acceptance:
+wait for observedKbps and verify video/actual output separately. Each revision
+emits advice once, not a mutation retry loop. Clear in finally with a fresh
+revision; expiry is backup protection. Never select an unrelated session or
+modify shared INI to force this test. Plain Fixed/old providers remain usable.
+
+For a native UI stall use diagnostics.threads once, not a concurrent polling
+loop or apiUI/GetMediaTime (which can wait on the lock being investigated).
+The authenticated public-JDK snapshot is bounded/redacted; no Core reflection,
+thread suspension, process command, PID or caller-selected API is exposed.
+Treat installation and actual stock-JVM readback separately from unit tests.
+
+Current server boundary:232/175/185 remain stock. Older non-stock232 Core
+exceptions below are superseded by the workspace stock rule. No replacement
+Sage.jar/native Core/stock FFmpeg; client first, supported plugin/container
+integration next. Preserve restart/activity guards and optional fallback.
+
 ## Task fix and server-boundary policy
 
 Apply this policy to every task workflow, including dependency fixes across

@@ -52,6 +52,53 @@ def sage_server_activity(server: str = "") -> dict[str, Any]:
 
 
 @mcp.tool()
+def sage_adaptive_bitrate_test(operation: str = "status", session_id: str = "",
+                             expected_revision: int = 0, target_kbps: int = 0,
+                             lease_seconds: int = 120, confirm: bool = False,
+                             platform: str = "linux", server: str = "") -> dict[str, Any]:
+    """Inspect/override one MIM adjusted session. Not an encoder-success claim.
+
+    Read status to obtain the opaque session_id and revision. Override holds
+    automatic policy for 15..300s; clear resumes it. Range, readiness, ownership
+    and handoff budgets are still enforced by MIM. No global settings change.
+    """
+    if operation not in ("status", "override", "clear") or platform not in ("linux", "windows"):
+        raise ValueError("Unknown operation/platform")
+    if type(confirm) is not bool:
+        raise ValueError("Boolean confirmation required")
+    if operation != "status":
+        if not confirm or not isinstance(session_id, str) or not re.fullmatch(r"[0-9a-f]{32}", session_id):
+            raise ValueError("Confirmed exact session required")
+        if type(expected_revision) is not int or not 0 <= expected_revision <= 999999999999:
+            raise ValueError("Exact revision required")
+        if operation == "override" and (type(target_kbps) is not int or not 250 <= target_kbps <= 50000
+                                       or type(lease_seconds) is not int or not 15 <= lease_seconds <= 300):
+            raise ValueError("Bounded bitrate/lease required")
+    return _call("plugin.adaptive_test", server,
+                 plugin_id="sagetvffmpegpluginlinux" if platform == "linux" else "sagetvffmpegpluginwinx64",
+                 operation=operation, session_id=session_id, expected_revision=expected_revision,
+                 target_kbps=target_kbps if operation == "override" else 0,
+                 lease_seconds=lease_seconds if operation == "override" else 0, confirm=confirm)
+
+
+@mcp.tool()
+def sage_bitrate_test(start: bool = False, confirm: bool = False,
+                      server: str = "") -> dict[str, Any]:
+    """Run/read the FFmpeg plugin's bounded synthetic bitrate settings test.
+
+    No arbitrary plugin/settings/process selection. Explicit confirmation is
+    required to start; the provider owns activity guards, scratch and cleanup.
+    This tool is optional commissioning, never a playback dependency.
+    """
+    if type(start) is not bool or type(confirm) is not bool or (start and not confirm):
+        raise ValueError("Boolean start/confirm; starting requires confirm=true")
+    selected, client = _client(server)
+    result = client.call("plugin.bitrate_test", plugin_id="sagetvffmpegpluginlinux", start=start, confirm=confirm)
+    result["server"] = selected
+    return result
+
+
+@mcp.tool()
 def sage_companion_available(refresh: bool = False, server: str = "") -> dict[str, Any]:
     """Inspect only Client Extension metadata; refresh the repository explicitly.
 
@@ -67,6 +114,18 @@ def sage_companion_available(refresh: bool = False, server: str = "") -> dict[st
 def sage_companion_status(server: str = "") -> dict[str, Any]:
     """Read the fixed Client Extension's installed version and enabled state."""
     return _call("companion.status", server)
+
+
+@mcp.tool()
+def sage_companion_dvd_bookmark(context: str, server: str = "") -> dict[str, Any]:
+    """Read one connected UI's bookmark presence/digest, never its disc path.
+
+    Refuse pre-existing data before a commissioning save/clear test. This tool
+    accepts no property key/value and performs no mutation or playback action.
+    """
+    if not isinstance(context, str) or not re.fullmatch(r"[0-9a-fA-F]{12}", context):
+        raise ValueError("Exact connected12-hex MiniClient context required")
+    return _call("companion.dvd_bookmark", server, context=context)
 
 
 @mcp.tool()
@@ -175,6 +234,12 @@ def sage_clear_watched(media_file_id: int, confirm: bool = False,
 @mcp.tool()
 def sage_diagnostics(context: str = "", server: str = "") -> dict[str, Any]:
     return _call("diagnostics.snapshot", server, context=context or None)
+
+
+@mcp.tool()
+def sage_diagnostics_threads(server: str = "") -> dict[str, Any]:
+    """One bounded read-only JVM thread snapshot; no UI/player calls or sampling loop."""
+    return _call("diagnostics.threads", server)
 
 
 def main() -> None:
